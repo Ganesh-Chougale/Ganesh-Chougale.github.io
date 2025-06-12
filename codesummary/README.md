@@ -1,5 +1,5 @@
 # portfolio  
-https://Ganesh-Chougale.github.io  
+https://ganesh-chougale.github.io/  
 
 ## codesummary  
 ```bash
