@@ -1,17 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Dynamic Year in Footer
+
     const yearParagraph = document.querySelector('footer .mb-0');
     if (yearParagraph) {
         yearParagraph.textContent = `© ${new Date().getFullYear()} Ganesh Chougale. All rights reserved.`;
     }
 
-    // Typewriter effect for header
     const words = ["simple", "concise"];
     let i = 0;
     let j = 0;
     let currentWord = "";
     let isDeleting = false;
-    const typewriterElement = document.getElementById('typewriter-text'); // Target the new span by its ID
+    const typewriterElement = document.getElementById('typewriter-text');
 
     function type() {
         if (!typewriterElement) return;
@@ -26,23 +25,22 @@ document.addEventListener('DOMContentLoaded', function() {
             j++;
         }
 
-        // Adjust typing/deleting speed
-        let typeSpeed = 150; // Typing speed
+        let typeSpeed = 150;
         if (isDeleting) {
-            typeSpeed = 75; // Deleting speed is faster
+            typeSpeed = 75;
         }
 
         if (!isDeleting && j === currentWord.length) {
-            typeSpeed = 1000; // Pause at end of typing
+            typeSpeed = 1000;
             isDeleting = true;
         } else if (isDeleting && j === 0) {
             isDeleting = false;
-            i = (i + 1) % words.length; // Move to next word
-            typeSpeed = 500; // Pause before starting new word
+            i = (i + 1) % words.length;
+            typeSpeed = 500;
         }
 
         setTimeout(type, typeSpeed);
     }
 
-    type(); // Start the typewriter effect
+    type();
 });
