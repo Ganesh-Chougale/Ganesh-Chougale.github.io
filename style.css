@@ -1,3 +1,9 @@
+header::before{
+    background-image: url("./Assests/Images/ocean_view.jpg");
+    background-size: cover; /* Default for larger screens */
+    background-position: center center;
+    background-repeat: no-repeat;
+}
 .hero-header {
     background-image: url("./Assests/Images/ocean_view.jpg");
     background-size: cover; /* Default for larger screens */
@@ -30,6 +36,7 @@
 }
 
 /* Text Enhancements for better visibility */
+
 .hero-header .text-muted {
     color: rgba(255, 255, 255, 0.9) !important; /* Make the small text whiter for better contrast */
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Shadow for tagline */
@@ -45,6 +52,7 @@
 .hero-header .navbar-nav .nav-link:hover {
     color: #e0e0e0 !important; /* Lighter hover state for nav links */
 }
+
 
 
 
