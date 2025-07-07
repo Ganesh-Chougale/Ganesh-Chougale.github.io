@@ -1,0 +1,125 @@
+body {
+    background-color: #e9ecef;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.container {
+    max-width: 800px;
+}
+h1.text-primary {
+    font-weight: 700;
+}
+.card {
+    border: none;
+    border-radius: 0.75rem;
+}
+.form-control-lg { /* Removed .form-select-lg as select is removed */
+    border-radius: 0.5rem;
+}
+.btn-lg {
+    border-radius: 0.5rem;
+}
+/* Adjust font size for paragraphs within translation output to ensure they fit well in columns */
+#marathiOutput,
+#hindiOutput,
+#englishOutput { /* Target the output paragraphs directly */
+    font-size: 1.1rem; /* Slightly smaller for compactness */
+    font-weight: 500;
+    line-height: 1.5; /* Slightly less line height for compactness */
+    word-wrap: break-word; /* Ensure long words wrap instead of overflowing */
+    overflow-wrap: break-word; /* For better browser support */
+}
+
+/* Individual result containers remain, but now they are Bootstrap columns */
+#marathiResultContainer,
+#hindiResultContainer,
+#englishResultContainer {
+    padding: 1rem;
+    border-left: 5px solid;
+    border-radius: 0.25rem;
+    /* margin-bottom: 1rem; already handled by Bootstrap col-mb-3 */
+    color: #333;
+    /* Removed fixed height/max-height to allow content to dictate height */
+    /* Add a subtle shadow or border to distinguish columns */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    min-height: 120px; /* Give them a minimum height to look uniform even if content is short */
+    display: flex; /* Use flexbox for vertical alignment of content */
+    flex-direction: column; /* Stack children vertically */
+}
+
+/* Specific colors based on your request */
+#marathiResultContainer {
+    border-color: #FF6F00; /* Saffron */
+    background-color: rgba(255, 111, 0, 0.08); /* Lighter saffron background */
+}
+#marathiResultContainer h5 {
+    color: #FF6F00; /* Saffron for heading */
+    margin-bottom: 0.5rem; /* Space between heading and text */
+}
+
+#hindiResultContainer {
+    border-color: #5A2377; /* Deep Purple */
+    background-color: rgba(90, 35, 119, 0.08); /* Lighter deep purple background */
+}
+#hindiResultContainer h5 {
+    color: #5A2377; /* Deep Purple for heading */
+    margin-bottom: 0.5rem;
+}
+
+#englishResultContainer {
+    border-color: #1565C0; /* Blue */
+    background-color: rgba(21, 101, 192, 0.08); /* Lighter blue background */
+}
+#englishResultContainer h5 {
+    color: #1565C0; /* Blue for heading */
+    margin-bottom: 0.5rem;
+}
+
+/* Adjustments for error and loading messages */
+#errorMessage, #loadingMessage, #noResultFound {
+    font-style: italic;
+    font-weight: 500;
+    text-align: center; /* Ensure they are centered within their column/container */
+    width: 100%; /* Take full width of their parent */
+}
+#errorMessage {
+    color: #dc3545; /* Bootstrap's danger red */
+}
+#loadingMessage .spinner-border {
+    color: #007bff !important; /* Keep primary blue for spinner or use a neutral gray */
+}
+
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Removed #translationOutput styles for scrollbar and max-height */
+/* as columns will manage content and overall page will scroll if needed */
+#translationOutput { /* Targeting the row directly */
+    padding-right: 0; /* No need for scrollbar padding here */
+}
+
+/* Media query adjustments for smaller screens */
+@media (max-width: 767.98px) { /* Breakpoint for col-md-* is 768px */
+    .col-12.col-md-4 {
+        margin-bottom: 1rem !important; /* Ensure consistent spacing when stacked */
+    }
+    #marathiOutput,
+    #hindiOutput,
+    #englishOutput {
+        font-size: 1.25rem; /* Larger font for better readability on stacked mobile */
+    }
+}
+
+@media (max-width: 575.98px) { /* Extra small devices */
+    .form-label.fs-5 {
+        font-size: 1.1rem !important;
+    }
+    .form-control-lg {
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
+    .card-title {
+        font-size: 1.5rem;
+    }
+}

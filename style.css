@@ -1,9 +1,9 @@
-header::before{
-    background-image: url("./Assests/Images/ocean_view.jpg");
-    background-size: cover; /* Default for larger screens */
-    background-position: center center;
-    background-repeat: no-repeat;
-}
+    header::before{
+        background-image: url("./Assests/Images/ocean_view.jpg");
+        background-size: cover; /* Default for larger screens */
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
 .hero-header {
     background-image: url("./Assests/Images/ocean_view.jpg");
     background-size: cover; /* Default for larger screens */

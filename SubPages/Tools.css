@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa; /* Consistent light background */
+}
+
+.password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Ensure it takes up most of the viewport height */
+    text-align: center;
+}
+
+.tool-card {
+    transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.tool-card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+}
