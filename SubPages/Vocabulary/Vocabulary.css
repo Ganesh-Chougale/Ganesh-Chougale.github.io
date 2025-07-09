@@ -12,106 +12,132 @@ h1.text-primary {
     border: none;
     border-radius: 0.75rem;
 }
-.form-control-lg { /* Removed .form-select-lg as select is removed */
+.form-control-lg {
     border-radius: 0.5rem;
 }
 .btn-lg {
     border-radius: 0.5rem;
 }
-/* Adjust font size for paragraphs within translation output to ensure they fit well in columns */
 #marathiOutput,
 #hindiOutput,
-#englishOutput { /* Target the output paragraphs directly */
-    font-size: 1.1rem; /* Slightly smaller for compactness */
+#englishOutput {
+    font-size: 1.1rem;
     font-weight: 500;
-    line-height: 1.5; /* Slightly less line height for compactness */
-    word-wrap: break-word; /* Ensure long words wrap instead of overflowing */
-    overflow-wrap: break-word; /* For better browser support */
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
-
-/* Individual result containers remain, but now they are Bootstrap columns */
 #marathiResultContainer,
 #hindiResultContainer,
 #englishResultContainer {
     padding: 1rem;
     border-left: 5px solid;
     border-radius: 0.25rem;
-    /* margin-bottom: 1rem; already handled by Bootstrap col-mb-3 */
     color: #333;
-    /* Removed fixed height/max-height to allow content to dictate height */
-    /* Add a subtle shadow or border to distinguish columns */
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    min-height: 120px; /* Give them a minimum height to look uniform even if content is short */
-    display: flex; /* Use flexbox for vertical alignment of content */
-    flex-direction: column; /* Stack children vertically */
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
 }
-
-/* Specific colors based on your request */
 #marathiResultContainer {
-    border-color: #FF6F00; /* Saffron */
-    background-color: rgba(255, 111, 0, 0.08); /* Lighter saffron background */
+    border-color: #FF6F00;
+    background-color: rgba(255, 111, 0, 0.08);
 }
 #marathiResultContainer h5 {
-    color: #FF6F00; /* Saffron for heading */
-    margin-bottom: 0.5rem; /* Space between heading and text */
+    color: #FF6F00;
+    margin-bottom: 0.5rem;
 }
-
 #hindiResultContainer {
-    border-color: #5A2377; /* Deep Purple */
-    background-color: rgba(90, 35, 119, 0.08); /* Lighter deep purple background */
+    border-color: #5A2377;
+    background-color: rgba(90, 35, 119, 0.08);
 }
 #hindiResultContainer h5 {
-    color: #5A2377; /* Deep Purple for heading */
+    color: #5A2377;
     margin-bottom: 0.5rem;
 }
-
 #englishResultContainer {
-    border-color: #1565C0; /* Blue */
-    background-color: rgba(21, 101, 192, 0.08); /* Lighter blue background */
+    border-color: #1565C0;
+    background-color: rgba(21, 101, 192, 0.08);
 }
 #englishResultContainer h5 {
-    color: #1565C0; /* Blue for heading */
+    color: #1565C0;
     margin-bottom: 0.5rem;
 }
-
-/* Adjustments for error and loading messages */
 #errorMessage, #loadingMessage, #noResultFound {
     font-style: italic;
     font-weight: 500;
-    text-align: center; /* Ensure they are centered within their column/container */
-    width: 100%; /* Take full width of their parent */
+    text-align: center;
+    width: 100%;
 }
 #errorMessage {
-    color: #dc3545; /* Bootstrap's danger red */
+    color: #dc3545;
 }
 #loadingMessage .spinner-border {
-    color: #007bff !important; /* Keep primary blue for spinner or use a neutral gray */
+    color: #007bff !important;
 }
-
 .spinner-border {
     width: 2rem;
     height: 2rem;
 }
-
-/* Removed #translationOutput styles for scrollbar and max-height */
-/* as columns will manage content and overall page will scroll if needed */
-#translationOutput { /* Targeting the row directly */
-    padding-right: 0; /* No need for scrollbar padding here */
+#translationOutput {
+    padding-right: 0;
 }
 
-/* Media query adjustments for smaller screens */
-@media (max-width: 767.98px) { /* Breakpoint for col-md-* is 768px */
+/* --- New and Modified CSS for CSV Output and Layout --- */
+#csvOutputDisplay { /* New style for the un-editable CSV box */
+    font-family: 'Consolas', 'Menlo', monospace; /* Monospace for code-like text */
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa; /* Light background */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 0.5rem;
+    white-space: nowrap; /* Keep content on one line unless forced to break */
+    overflow-x: auto; /* Allow horizontal scrolling if content is too wide */
+    cursor: copy; /* Indicate it's clickable for copy */
+    color: #212529;
+    min-height: 48px; /* Ensure a decent height even if empty */
+    display: flex; /* Use flexbox to center content vertically */
+    align-items: center; /* Center content vertically */
+}
+
+/* Adjust card margins for better viewport fit */
+.container .card:first-of-type {
+    margin-bottom: 1rem !important; /* Reduce margin below the input card */
+}
+
+.card .mb-4 { /* Reduce margin for "Translations:" heading */
+    margin-bottom: 1rem !important;
+}
+
+.card .mt-4 { /* Reduce margin above the CSV output container */
+    margin-top: 1rem !important;
+}
+
+.text-center.mt-5 { /* Reduce margin for the "Back to Tools" button */
+    margin-top: 2rem !important;
+}
+
+/* For the "Copied!" feedback badge */
+#copyFeedback {
+    z-index: 10; /* Ensure it's above other elements */
+    font-size: 0.85rem;
+    padding: 0.25em 0.6em;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+}
+
+
+@media (max-width: 767.98px) {
     .col-12.col-md-4 {
-        margin-bottom: 1rem !important; /* Ensure consistent spacing when stacked */
+        margin-bottom: 1rem !important;
     }
     #marathiOutput,
     #hindiOutput,
     #englishOutput {
-        font-size: 1.25rem; /* Larger font for better readability on stacked mobile */
+        font-size: 1.25rem;
     }
 }
-
-@media (max-width: 575.98px) { /* Extra small devices */
+@media (max-width: 575.98px) {
     .form-label.fs-5 {
         font-size: 1.1rem !important;
     }

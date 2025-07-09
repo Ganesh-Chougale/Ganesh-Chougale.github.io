@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="Vocabulary.css">
 </head>
 <body>
-    <div class="container my-5">
+    <div class="container my-3">
         <div class="card p-4 shadow-sm mb-5">
             <div class="mb-3">
                 <input type="text" class="form-control form-control-lg" id="universalInput" placeholder="Type any word to translate..." autofocus>
@@ -25,7 +25,6 @@
             </div>
             <p id="errorMessage" class="text-danger text-center mt-3 d-none"></p>
         </div>
-
         <div class="card p-4 shadow-sm">
             <h3 class="card-title mb-4">Translations:</h3>
             <div class="row" id="translationOutput">
@@ -44,7 +43,13 @@
                 <div class="col-12 d-none" id="noResultFoundContainer"> <p id="noResultFound" class="text-muted text-center mt-3 d-none">No translation found for the entered word.</p>
                 </div>
             </div>
-        </div>
+
+            <div id="csvOutputContainer" class="mt-4 p-3 border rounded bg-light d-none">
+                <h5 class="mb-3">CSV Output</h5>
+                <div id="csvOutputDisplay" class="text-muted"></div>
+                <span id="copyFeedback" class="position-absolute translate-middle-x badge bg-success d-none" style="bottom: -15px; left: 50%;">Copied!</span>
+            </div>
+            </div>
         <div class="text-center mt-5">
             <a href="../Tools.html" class="btn btn-secondary btn-lg">
                 <i class="fas fa-arrow-left me-2"></i> Back to Tools
