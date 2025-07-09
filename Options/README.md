@@ -4,7 +4,7 @@ https://ganesh-chougale.github.io/
 ```  
 ## codesummary  
 ```bash
-node codesummary/cS.js
+node Options/Codebase/codeSummary.js "C:\Users\RaSkull\OneDrive\Desktop\Code\Portfolio"
 ```  
 ## Git push
 ```bash
