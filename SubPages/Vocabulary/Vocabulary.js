@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (hasTranslation) {
             // Populate CSV output display
-            csvOutputDisplay.textContent = `${toCapitalCase(originalWord)}, ${marathiTrans}, ${hindiTrans}`;
+            csvOutputDisplay.textContent = `${toCapitalCase(translations.english)}, ${marathiTrans}, ${hindiTrans}`;
             csvOutputContainer.classList.remove('d-none'); // Show CSV container
         } else if (originalWord.trim() !== '') {
         // if (hasTranslation) {
