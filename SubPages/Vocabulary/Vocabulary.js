@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (hasTranslation) {
             // Populate CSV output display
-            csvOutputDisplay.textContent = `${originalWord}, ${marathiTrans}, ${hindiTrans}`;
+            const Capped_OriginalWord = originalWord.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase(); // make word capital
+            csvOutputDisplay.textContent = `${Capped_OriginalWord}, ${marathiTrans}, ${hindiTrans}`;
             csvOutputContainer.classList.remove('d-none'); // Show CSV container
         } else if (originalWord.trim() !== '') {
             // Only show "No translation found" if the input is not empty and no translation was found
