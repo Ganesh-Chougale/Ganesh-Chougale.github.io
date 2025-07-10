@@ -90,9 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (hasTranslation) {
             // Populate CSV output display
-            csvOutputDisplay.textContent = `${originalWord}, ${marathiTrans}, ${hindiTrans}`;
+            csvOutputDisplay.textContent = `${toCapitalCase(originalWord)}, ${marathiTrans}, ${hindiTrans}`;
             csvOutputContainer.classList.remove('d-none'); // Show CSV container
         } else if (originalWord.trim() !== '') {
+        // if (hasTranslation) {
+        //     // Populate CSV output display
+        //     csvOutputDisplay.textContent = `${originalWord}, ${marathiTrans}, ${hindiTrans}`;
+        //     csvOutputContainer.classList.remove('d-none'); // Show CSV container
+        // } else if (originalWord.trim() !== '') {
             // Only show "No translation found" if the input is not empty and no translation was found
             noResultFound.classList.remove('d-none');
             if (noResultFoundContainer) {
