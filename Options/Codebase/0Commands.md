@@ -1,6 +1,6 @@
 ```bash
-node Options/Codebase/codeSummary.js "C:\Users\RaSkull\OneDrive\Desktop\Code\Portfolio" 
+node Options/Codebase/CodeSummary.js "C:\Users\RaSkull\OneDrive\Desktop\Code\Portfolio" 
 ```  
 ```bash
-node Options/Codebase/codeSummary.js "C:\Users\RaSkull\OneDrive\Desktop\Code\Portfolio\SubPages\Vocabulary" 
+node Options/Codebase/FileAndFolderSummary.js "C:\Users\RaSkull\OneDrive\Desktop\Code\Portfolio" 
 ```  

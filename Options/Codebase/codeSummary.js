@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
+// Toggle this to control formatting whitespace/tabs
+const removeWhitespaceFormatting = true;
+
 // Supported file extensions and languages
 const supportedExtensions = {
   ".js": "js",
@@ -16,43 +19,20 @@ const supportedExtensions = {
   ".sh": "bash",
   ".cs": "csharp",
   ".css": "css",
-  ".txt": "text",
+  // ".txt": "text",
   ".h": "cpp",
-  ".hpp": "cpp",
+  ".yaml": "yaml",
+  ".dart": "dart"
 };
 
 // Ignored files and folders
 const ignoredFiles = [
-  ".angular",
-  ".vscode",
-  "node_modules",
-  ".editorconfig",
-  ".gitignore",
-  "Migrations",
-  "Debug",
-  "test",
-  "libs",
-  "angular.json",
-  "package-lock.json",
-  "package.json",
-  "README.md",
-  "Dependencies",
-  "Connected Services",
-  "tsconfig.app.json",
-  "tsconfig.json",
-  "tsconfig.spec.json",
-  "CodeSummary.md",
-  ".mvn",
-  ".settings",
-  "build",
-  "codeSummary.js",
-  "CodeSummary.js",
-  "cS.js",
-  "CS.js",
-  "DirectorySummary.js",
-  "ErrorExporter.js",
-  "FileAndFolderSummary.js",
-  "Splitter.js",
+   ".metadata", "libraries", "gradle",  ".angular", ".vscode", "node_modules", ".editorconfig", 
+   ".gitignore", "Migrations", "Debug",  "test", "libs", "angular.json", "package-lock.json", 
+   "package.json", "README.md", "Dependencies",  "Connected Services", "tsconfig.app.json", 
+   "tsconfig.json", "tsconfig.spec.json", "CodeSummary.md", ".mvn", ".settings", "build", 
+   "codeSummary.js", "CodeSummary.js", "cS.js", "CS.js", ".idea", "DirectorySummary.js", 
+   "ErrorExporter.js", "FileAndFolderSummary.js", "Splitter.js", ".dart_tool", "io", "plugins", "flutter", "windows"
 ];
 
 let processedFiles = 0;
@@ -60,7 +40,6 @@ let totalFiles = 0;
 let lastDir = "";
 let currentDir = "";
 
-// Recursive directory walker
 function walkDir(dir, callback) {
   if (!fs.existsSync(dir)) return;
   fs.readdirSync(dir).forEach((file) => {
@@ -74,33 +53,7 @@ function walkDir(dir, callback) {
   });
 }
 
-// One line Allowed
-// function removeExcessiveEmptyLines(content) {
-//     return content
-//         .replace(/\r\n/g, '\n')                     // Normalize Windows line endings
-//         .split('\n')
-//         .reduce((acc, line) => {
-//             const isEmpty = line.trim() === '';
-//             const lastLineEmpty = acc.length > 0 && acc[acc.length - 1].trim() === '';
-//             if (isEmpty && lastLineEmpty) return acc; // skip multiple empties
-//             acc.push(line);
-//             return acc;
-//         }, [])
-//         .join('\n')
-//         .trim();
-// }
-
-// No Line Allowed
-function removeExcessiveEmptyLines(content) {
-  return content
-    .replace(/\r\n/g, "\n") // Normalize line endings
-    .split("\n")
-    .filter((line) => line.trim() !== "") // Remove all blank or whitespace-only lines
-    .join("\n")
-    .trim();
-}
-
-// Strip comments from code based on language
+// ⚙️ Strip comments from code
 function stripComments(content, lang) {
   switch (lang) {
     case "js":
@@ -113,51 +66,53 @@ function stripComments(content, lang) {
     case "swift":
     case "scala":
     case "kotlin":
-      return content
-        .replace(/\/\/.*$/gm, "") // single-line //
-        .replace(/\/\*[\s\S]*?\*\//gm, ""); // multi-line /* */
-
+      return content.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//gm, "");
     case "python":
     case "ruby":
     case "bash":
     case "shell":
     case "dockerfile":
-      return content.replace(/#.*$/gm, ""); // single-line #
-
+      return content.replace(/#.*$/gm, "");
     case "html":
     case "xml":
     case "vue":
     case "svelte":
-      return content.replace(/<!--[\s\S]*?-->/gm, ""); // <!-- comment -->
-
+      return content.replace(/<!--[\s\S]*?-->/gm, "");
     case "css":
     case "scss":
     case "less":
-      return content.replace(/\/\*[\s\S]*?\*\//gm, ""); // /* comment */
-
+      return content.replace(/\/\*[\s\S]*?\*\//gm, "");
     case "yaml":
     case "yml":
     case "ini":
     case "toml":
-      return content.replace(/^\s*#.*/gm, ""); // # comment
-
+      return content.replace(/^\s*#.*/gm, "");
     case "sql":
-      return content
-        .replace(/--.*$/gm, "") // -- comment
-        .replace(/\/\*[\s\S]*?\*\//gm, ""); // /* comment */
-
+      return content.replace(/--.*$/gm, "").replace(/\/\*[\s\S]*?\*\//gm, "");
     case "json":
     case "markdown":
     case "md":
     case "txt":
-      return content; // No comment removal
-
+      return content;
     default:
       return content;
   }
 }
 
-// Summary generator
+// ✅ Clean empty lines + optional whitespace formatting
+function removeExcessiveEmptyLines(content) {
+  return content
+    .replace(/\r\n/g, "\n")
+    .split("\n")
+    .filter((line) => line.trim() !== "")
+    .map((line) =>
+      removeWhitespaceFormatting ? line.replace(/\s+/g, "") : line
+    )
+    .join("\n")
+    .trim();
+}
+
+// 📝 Generate summary
 function generateSummary(root, selectedDirs) {
   let summary = "";
   processedFiles = 0;
@@ -171,10 +126,10 @@ function generateSummary(root, selectedDirs) {
       ? selectedDirs.map((folder) => path.resolve(folder)).filter(fs.existsSync)
       : [root];
 
-  // First pass: count valid files
+  // Count total
   targets.forEach((dir) => {
     walkDir(dir, (filePath) => {
-      const ext = path.extname(filePath);
+      const ext = path.extname(filePath).toLowerCase();
       const lang = supportedExtensions[ext];
       const relativeFilePath = path.relative(root, filePath);
       if (
@@ -188,10 +143,10 @@ function generateSummary(root, selectedDirs) {
 
   console.log(`📄 Total files to process: ${totalFiles}`);
 
-  // Second pass: process each file
+  // Process files
   targets.forEach((dir) => {
     walkDir(dir, (filePath) => {
-      const ext = path.extname(filePath);
+      const ext = path.extname(filePath).toLowerCase();
       const lang = supportedExtensions[ext];
       const relativeFilePath = path.relative(root, filePath);
       if (
@@ -205,14 +160,13 @@ function generateSummary(root, selectedDirs) {
 
       if (currentDir !== lastDir) {
         if (lastDir) {
-          summary += `\n---\n\nAfter finishing all code summary of ${lastDir}\n\n`;
+          summary += `\n---\n\nAfter finishing all code summary of ${lastDir}\n`;
         }
         lastDir = currentDir;
       }
 
       console.log(`Processing: ${relativeFilePath}`);
 
-      // Strip comments then clean blank lines
       let cleanedContent = stripComments(content, lang);
       cleanedContent = removeExcessiveEmptyLines(cleanedContent);
 
@@ -224,7 +178,7 @@ function generateSummary(root, selectedDirs) {
 
       if (processedFiles === totalFiles) {
         console.log(`\n💾 Writing to CodeSummary.md...`);
-        const outputDir = path.join(__dirname, "ScriptOutput", "CodeSummary");
+        const outputDir = path.join(__dirname, "ScriptOutput");
         fs.mkdirSync(outputDir, { recursive: true });
         fs.writeFileSync(path.join(outputDir, "CodeSummary.md"), summary);
         console.log(`✅ Done! Summary saved to CodeSummary.md`);
@@ -233,7 +187,7 @@ function generateSummary(root, selectedDirs) {
   });
 }
 
-// MAIN
+// 🏁 MAIN
 const rootDir = process.cwd();
 const selectedDirs = process.argv.slice(2);
 generateSummary(rootDir, selectedDirs);
