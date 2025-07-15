@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Toggle this to control formatting whitespace/tabs
-const removeWhitespaceFormatting = true;
+const removeWhitespaceFormatting = false;
 
 // Supported file extensions and languages
 const supportedExtensions = {
