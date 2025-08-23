@@ -1,19 +1,32 @@
 body {
-    background-color: #f8f9fa; /* Consistent light background */
+  background-color: #f8f9fa;
 }
 
 .password-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh; /* Ensure it takes up most of the viewport height */
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  text-align: center;
 }
 
 .tool-card {
-    transition: transform 0.2s; /* Smooth hover effect */
+  transition: transform 0.2s;
 }
 
 .tool-card:hover {
-    transform: translateY(-5px); /* Lift card on hover */
+  transform: translateY(-5px);
+}
+
+/* Shake animation */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.4s;
 }

@@ -1,0 +1,13 @@
+#resultContainer {
+  margin-top: 1rem;
+}
+
+#outputText {
+  font-family: 'Consolas', 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+#downloadBtn, #copyBtn {
+  font-size: 0.85rem;
+}

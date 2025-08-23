@@ -1,0 +1,28 @@
+<!-- SubPages/FileDiffer/FileDiffer.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>File Differ</title>
+    <!-- CDN Links -->
+    <script>
+        fetch('../../Assets/Utils/cdn.html')
+        .then(response => response.text())
+        .then(data => document.head.insertAdjacentHTML('beforeend', data));
+    </script>
+    <!-- CDN Links -->
+  </head>
+
+  <body class="p-4">
+    <div class="container">
+      <h1 class="mb-3">File Differ Test</h1>
+      <button id="testBtn" class="btn btn-primary">Run Test</button>
+      <pre id="output" class="mt-3 p-2 bg-light border"></pre>
+    </div>
+
+    <p>not completed</p>
+
+    <script type="module" src="FileDiffer.js"></script>
+  </body>
+</html>

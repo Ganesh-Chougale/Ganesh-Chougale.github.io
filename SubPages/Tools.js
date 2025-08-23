@@ -1,34 +1,44 @@
-// SubPages/Tools.js
-document.addEventListener('DOMContentLoaded', function() {
-    const correctPassword = "3.14";
-    const passwordInput = document.getElementById('passwordInput');
-    const submitPasswordBtn = document.getElementById('submitPassword');
-    const passwordProtectionDiv = document.getElementById('password-protection');
-    const toolsContentDiv = document.getElementById('tools-content');
-    const passwordError = document.getElementById('passwordError');
+import BINGO from "../Assets/Utils/Bingo.js"; // <-- Check spelling (Assets vs Assests)
 
-    // Check if the user has already successfully entered the password (using sessionStorage)
-    if (sessionStorage.getItem('accessGranted') === 'true') {
-        passwordProtectionDiv.classList.add('d-none');
-        toolsContentDiv.classList.remove('d-none');
+document.addEventListener('DOMContentLoaded', function () {
+  const correctPassword = BINGO.PieValue;
+  const passwordInput = document.getElementById('passwordInput');
+  const submitPasswordBtn = document.getElementById('submitPassword');
+  const passwordProtectionDiv = document.getElementById('password-protection');
+  const card = passwordProtectionDiv.querySelector(".card");
+  const toolsContentDiv = document.getElementById('tools-content');
+  const passwordError = document.getElementById('passwordError');
+
+  // If already logged in
+  if (sessionStorage.getItem('accessGranted') === 'true') {
+    passwordProtectionDiv.classList.add('d-none');
+    toolsContentDiv.classList.remove('d-none');
+  }
+
+  function handleIncorrectPassword() {
+    passwordInput.value = '';
+    passwordError.classList.remove('d-none');
+    card.classList.add('shake');
+    setTimeout(() => card.classList.remove('shake'), 400);
+    setTimeout(() => passwordError.classList.add('d-none'), 3000);
+  }
+
+  submitPasswordBtn.addEventListener('click', function () {
+    submitPasswordBtn.disabled = true;
+    setTimeout(() => { submitPasswordBtn.disabled = false; }, 1000);
+
+    if (passwordInput.value === correctPassword) {
+      passwordProtectionDiv.classList.add('d-none');
+      toolsContentDiv.classList.remove('d-none');
+      sessionStorage.setItem('accessGranted', 'true');
+    } else {
+      handleIncorrectPassword();
     }
+  });
 
-    submitPasswordBtn.addEventListener('click', function() {
-        if (passwordInput.value === correctPassword) {
-            passwordProtectionDiv.classList.add('d-none');
-            toolsContentDiv.classList.remove('d-none');
-            passwordError.classList.add('d-none');
-            sessionStorage.setItem('accessGranted', 'true'); // Store access status
-        } else {
-            passwordInput.value = ''; // Clear the input
-            passwordError.classList.remove('d-none');
-        }
-    });
-
-    // Allow pressing Enter key to submit password
-    passwordInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            submitPasswordBtn.click();
-        }
-    });
+  passwordInput.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+      submitPasswordBtn.click();
+    }
+  });
 });

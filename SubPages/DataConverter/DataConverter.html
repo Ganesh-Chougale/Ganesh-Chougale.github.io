@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text File Converter</title>
+    <!-- CDN Links -->
+    <script>
+        fetch('../../Assets/Utils/cdn.html')
+        .then(response => response.text())
+        .then(data => document.head.insertAdjacentHTML('beforeend', data));
+    </script>
+    <!-- CDN Links -->
+    <link rel="stylesheet" href="DataConverter.css" />
+  </head>
+  <body>
+    <div class="container my-5">
+      <h2 class="mb-4 text-center">Text File Converter</h2>
+      <div class="mb-3">
+        <input type="file" id="inputFile" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="outputFormat">Convert to:</label>
+        <select id="outputFormat" class="form-select">
+          <option value="csv">CSV</option>
+          <option value="json">JSON</option>
+        </select>
+      </div>
+      <button id="convertBtn" class="btn btn-primary mb-4">Convert</button>
+
+      <div id="resultContainer" class="d-none position-relative">
+        <div class="d-flex justify-content-end mb-2 gap-2">
+          <button id="downloadBtn" class="btn btn-success btn-sm">
+            Download
+          </button>
+          <button id="copyBtn" class="btn btn-secondary btn-sm">Copy</button>
+        </div>
+        <textarea
+          id="outputText"
+          class="form-control"
+          rows="15"
+          readonly
+        ></textarea>
+      </div>
+    </div>
+
+    <script src="DataConverter.js"></script>
+  </body>
+</html>

@@ -2,7 +2,10 @@ const fs = require("fs");
 const path = require("path");
 
 // Toggle this to control formatting whitespace/tabs
-const removeWhitespaceFormatting = false;
+const removeWhitespaceFormatting = true;
+
+// List of languages/extensions to skip
+const skipLanguages = ["text"]; // can be ".css" or "css" or mixed
 
 // Supported file extensions and languages
 const supportedExtensions = {
@@ -19,20 +22,32 @@ const supportedExtensions = {
   ".sh": "bash",
   ".cs": "csharp",
   ".css": "css",
-  // ".txt": "text",
+  ".txt": "text",
   ".h": "cpp",
   ".yaml": "yaml",
-  ".dart": "dart"
+  ".dart": "dart",
+  ".tsx": "typescript",
+  ".mjs": "javascript",
+  ".env": "env"
 };
+
+// 🔑 Normalize skipLanguages so it can take both extensions (.css) or language names (css)
+const normalizedSkipLanguages = skipLanguages.map((item) => {
+  if (item.startsWith(".")) {
+    return supportedExtensions[item] || item.replace(".", "");
+  }
+  return item;
+});
 
 // Ignored files and folders
 const ignoredFiles = [
-   ".metadata", "libraries", "gradle",  ".angular", ".vscode", "node_modules", ".editorconfig", 
-   ".gitignore", "Migrations", "Debug",  "test", "libs", "angular.json", "package-lock.json", 
-   "package.json", "README.md", "Dependencies",  "Connected Services", "tsconfig.app.json", 
-   "tsconfig.json", "tsconfig.spec.json", "CodeSummary.md", ".mvn", ".settings", "build", 
-   "codeSummary.js", "CodeSummary.js", "cS.js", "CS.js", ".idea", "DirectorySummary.js", 
-   "ErrorExporter.js", "FileAndFolderSummary.js", "Splitter.js", ".dart_tool", "io", "plugins", "flutter", "windows"
+  "site",
+  ".metadata", "libraries", "gradle", ".angular", ".vscode", "node_modules", ".editorconfig",
+  ".gitignore", "Migrations", "Debug", "test", "libs", "angular.json", "package-lock.json",
+  "package.json", "README.md", "Dependencies", "Connected Services", "tsconfig.app.json", "next-env.d.ts",
+  "tsconfig.json", "tsconfig.spec.json", "CodeSummary.md", ".mvn", ".settings", "build", "next.config.ts",
+  "codeSummary.js", "CodeSummary.js", "cS.js", "CS.js", ".idea", "DirectorySummary.js", ".next",
+  "ErrorExporter.js", "FileAndFolderSummary.js", "Splitter.js", ".dart_tool", "io", "plugins", "flutter", "windows"
 ];
 
 let processedFiles = 0;
@@ -92,7 +107,7 @@ function stripComments(content, lang) {
     case "json":
     case "markdown":
     case "md":
-    case "txt":
+    case "text":
       return content;
     default:
       return content;
@@ -106,7 +121,7 @@ function removeExcessiveEmptyLines(content) {
     .split("\n")
     .filter((line) => line.trim() !== "")
     .map((line) =>
-      removeWhitespaceFormatting ? line.replace(/\s+/g, "") : line
+      removeWhitespaceFormatting ? line.trimStart() : line
     )
     .join("\n")
     .trim();
@@ -134,7 +149,8 @@ function generateSummary(root, selectedDirs) {
       const relativeFilePath = path.relative(root, filePath);
       if (
         !lang ||
-        ignoredFiles.some((ignored) => relativeFilePath.includes(ignored))
+        ignoredFiles.some((ignored) => relativeFilePath.includes(ignored)) ||
+        normalizedSkipLanguages.includes(lang)
       )
         return;
       totalFiles++;
@@ -151,7 +167,8 @@ function generateSummary(root, selectedDirs) {
       const relativeFilePath = path.relative(root, filePath);
       if (
         !lang ||
-        ignoredFiles.some((ignored) => relativeFilePath.includes(ignored))
+        ignoredFiles.some((ignored) => relativeFilePath.includes(ignored)) ||
+        normalizedSkipLanguages.includes(lang)
       )
         return;
 
