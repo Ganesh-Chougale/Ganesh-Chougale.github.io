@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Resizer</title>
+  <script>
+    fetch('../../Assets/Utils/cdn.html')
+      .then(res => res.text())
+      .then(data => document.head.insertAdjacentHTML('beforeend', data));
+  </script>
+  <link rel="stylesheet" href="ImageResizer.css" />
+</head>
+<body>
+<div class="container my-5">
+  <h2 class="text-center mb-4">Image Resizer</h2>
+
+  <!-- Upload -->
+  <div class="mb-3">
+    <input type="file" id="inputImage" class="form-control" accept="image/*" />
+  </div>
+
+  <!-- Preview Section -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h5>Original</h5>
+      <div class="preview-container">
+        <div id="originalPlaceholder" class="placeholder-content">
+          <i class="bi bi-card-image placeholder-icon"></i>
+          <p>Upload an image to see the original</p>
+        </div>
+        <img id="originalPreview" class="img-fluid rounded shadow-sm d-none" alt="Original Preview" />
+      </div>
+      <div id="originalInfo" class="mt-2">
+        <p>Dimensions: <span id="originalDimensions">-</span></p>
+        <p>File Size: <span id="originalSize">-</span></p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h5>Resized</h5>
+      <div class="preview-container">
+        <div id="resizedPlaceholder" class="placeholder-content">
+          <i class="bi bi-arrow-left-right placeholder-icon"></i>
+          <p>Adjust settings to see the resized version</p>
+        </div>
+        <img id="preview" class="img-fluid rounded shadow-sm d-none" alt="Resized Preview" />
+      </div>
+      <div id="resizedInfo" class="mt-2">
+        <p>Dimensions: <span id="resizedDimensions">-</span></p>
+        <p>File Size: <span id="resizedSize">-</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resize Options -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-5">
+      <label for="widthInput" class="form-label">Width (px)</label>
+      <input type="number" id="widthInput" class="form-control" min="1" />
+    </div>
+    <div class="col-md-5">
+      <label for="heightInput" class="form-label">Height (px)</label>
+      <input type="number" id="heightInput" class="form-control" min="1" />
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="maintainAspect" checked>
+        <label class="form-check-label" for="maintainAspect">Lock Ratio</label>
+      </div>
+    </div>
+    <div class="col-12">
+      <label for="qualityInput" class="form-label">Quality: <span id="qualityLabel">90%</span></label>
+      <input type="range" id="qualityInput" class="form-range" min="0.1" max="1" step="0.1" value="0.9" />
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="text-center">
+    <button id="downloadBtn" class="btn btn-success d-none">Download Resized Image</button>
+  </div>
+
+  <!-- Hidden Canvas -->
+  <canvas id="canvas" class="d-none"></canvas>
+</div>
+
+<script src="ImageResizer.js"></script>
+</body>
+</html>
