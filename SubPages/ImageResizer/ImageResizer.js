@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const maintainAspect = document.getElementById("maintainAspect");
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
-  
+
   // Info display elements
   const originalDimensions = document.getElementById("originalDimensions");
   const originalSize = document.getElementById("originalSize");
@@ -23,26 +23,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let originalImage = new Image();
   let originalAspectRatio = 0;
-  let originalFileSize = 0;
   let lastChangedInput = null;
 
   // Format file size
   const formatFileSize = (bytes) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  // Convert dataURL → Blob (for accurate file size)
+  const dataURLtoBlob = (dataURL) => {
+    const byteString = atob(dataURL.split(",")[1]);
+    const mimeString = dataURL.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
   };
 
   // Update dimensions while maintaining aspect ratio
   const updateDimensions = (changedInput) => {
     if (!maintainAspect.checked || !originalAspectRatio) return;
 
-    if (changedInput === 'width') {
+    if (changedInput === "width") {
       const newHeight = Math.round(widthInput.value / originalAspectRatio);
       heightInput.value = newHeight;
-    } else if (changedInput === 'height') {
+    } else if (changedInput === "height") {
       const newWidth = Math.round(heightInput.value * originalAspectRatio);
       widthInput.value = newWidth;
     }
@@ -50,8 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Show/hide placeholders
   const updatePlaceholders = () => {
-    originalPlaceholder.style.display = originalImage.src ? 'none' : 'block';
-    resizedPlaceholder.style.display = (preview.src && !preview.classList.contains('d-none')) ? 'none' : 'block';
+    originalPlaceholder.style.display = originalImage.src ? "none" : "block";
+    resizedPlaceholder.style.display =
+      preview.src && !preview.classList.contains("d-none")
+        ? "none"
+        : "block";
   };
 
   // Update preview with current settings
@@ -65,33 +79,36 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update canvas with new dimensions
     canvas.width = newWidth;
     canvas.height = newHeight;
-
-    // Draw resized image
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     try {
       ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
-      
-      // Get resized image data URL
-      const resizedDataUrl = canvas.toDataURL("image/jpeg", quality);
-      
+
+      // Pick correct format from original extension
+      let ext = (downloadBtn.dataset.extension || "jpg").toLowerCase();
+      let outputFormat = "image/jpeg"; // default
+      if (ext === "png") outputFormat = "image/png";
+      else if (ext === "webp") outputFormat = "image/webp";
+
+      // PNG ignores quality param, JPEG/WEBP use it
+      const resizedDataUrl = canvas.toDataURL(outputFormat, quality);
+
       // Update preview
       preview.onload = () => {
         preview.classList.remove("d-none");
         updatePlaceholders();
       };
       preview.src = resizedDataUrl;
-      
+
+      // Store for download
       downloadBtn.classList.remove("d-none");
       downloadBtn.dataset.url = resizedDataUrl;
-      
-      // Update resized dimensions display
+      downloadBtn.dataset.outputFormat = outputFormat;
+
+      // Update resized info
       resizedDimensions.textContent = `${newWidth} × ${newHeight} px`;
-      
-      // Calculate and display resized file size
-      const resizedFileSize = Math.round((resizedDataUrl.length - 22) * 3 / 4);
-      resizedSize.textContent = formatFileSize(resizedFileSize);
-      
+      const resizedBlob = dataURLtoBlob(resizedDataUrl);
+      resizedSize.textContent = formatFileSize(resizedBlob.size);
     } catch (error) {
       console.error("Error resizing image:", error);
       preview.classList.add("d-none");
@@ -104,36 +121,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = inputImage.files[0];
     if (!file) return;
 
-    // Store original filename and extension
+    // Store original filename + extension
     const originalFileName = file.name;
-    const fileNameParts = originalFileName.split('.');
-    const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop() : '';
-    const fileNameWithoutExt = fileNameParts.join('.');
-    
+    const fileNameParts = originalFileName.split(".");
+    const fileExtension =
+      fileNameParts.length > 1 ? fileNameParts.pop().toLowerCase() : "jpg";
+    const fileNameWithoutExt = fileNameParts.join(".");
+
     // Store for download
     downloadBtn.dataset.originalName = fileNameWithoutExt;
     downloadBtn.dataset.extension = fileExtension;
 
     // Display original file info
-    originalFileSize = file.size;
-    originalSize.textContent = formatFileSize(originalFileSize);
-    originalInfo.style.display = 'block';
+    originalSize.textContent = formatFileSize(file.size);
+    originalInfo.style.display = "block";
 
     // Load and display original image
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = (e) => {
       originalImage.onload = () => {
-        // Set dimensions
         widthInput.value = originalImage.width;
         heightInput.value = originalImage.height;
         originalAspectRatio = originalImage.width / originalImage.height;
-        
-        // Update displays
+
         originalDimensions.textContent = `${originalImage.width} × ${originalImage.height} px`;
         originalPreview.src = e.target.result;
         originalPreview.classList.remove("d-none");
-        
-        // Initial preview update
+
         updatePreview();
         updatePlaceholders();
       };
@@ -151,14 +165,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle width/height changes
   widthInput.addEventListener("input", () => {
-    lastChangedInput = 'width';
-    updateDimensions('width');
+    lastChangedInput = "width";
+    updateDimensions("width");
     updatePreview();
   });
 
   heightInput.addEventListener("input", () => {
-    lastChangedInput = 'height';
-    updateDimensions('height');
+    lastChangedInput = "height";
+    updateDimensions("height");
     updatePreview();
   });
 
@@ -176,12 +190,16 @@ document.addEventListener("DOMContentLoaded", () => {
     link.href = downloadBtn.dataset.url;
     const width = widthInput.value;
     const height = heightInput.value;
-    const originalName = downloadBtn.dataset.originalName || 'resized';
-    const extension = downloadBtn.dataset.extension ? `.${downloadBtn.dataset.extension}` : '.jpg';
-    link.download = `${originalName}_${width}x${height}${extension}`;
+    const originalName = downloadBtn.dataset.originalName || "resized";
+
+    // Ensure extension matches actual format
+    let ext = (downloadBtn.dataset.extension || "jpg").toLowerCase();
+    if (!["jpg", "jpeg", "png", "webp"].includes(ext)) ext = "jpg";
+
+    link.download = `${originalName}_${width}x${height}.${ext}`;
     link.click();
   });
 
-  // Initialize placeholders
+  // Init placeholders
   updatePlaceholders();
 });
