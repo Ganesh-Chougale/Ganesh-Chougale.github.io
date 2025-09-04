@@ -1,291 +1,378 @@
-SubPages\ImageResizer\ImageResizer.css:
+SubPages\NBT\NBT.css:
 ```css
-#preview {
-max-height: 300px;
-object-fit: contain;
+details summary {
+cursor: pointer;
+padding: 0.5rem;
+background: #f8f9fa;
+border: 1px solid #dee2e6;
+border-radius: 5px;
 }
-.preview-container {
-border: 2px dashed #dee2e6;
-border-radius: 0.5rem;
-background-color: #f8f9fa;
-min-height: 200px;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 20px;
-margin-bottom: 10px;
-position: relative;
-transition: all 0.3s ease;
-overflow: hidden;
+details[open] summary {
+background: #e9ecef;
+font-weight: bold;
 }
-.preview-container:hover {
-border-color: #adb5bd;
-background-color: #f1f3f5;
-}
-.placeholder-content {
-text-align: center;
-color: #6c757d;
-padding: 20px;
-width: 100%;
-}
-.placeholder-icon {
-font-size: 3rem;
-margin-bottom: 1rem;
-color: #adb5bd;
-display: block;
-}
-.placeholder-content p {
-margin: 0;
-font-size: 0.9rem;
-}
-.preview-container img {
-max-width: 100%;
-max-height: 300px;
-object-fit: contain;
-display: block;
-margin: 0 auto;
-}
-.preview-container img.d-none {
-display: none;
-}
-.preview-container img:not(.d-none) + .placeholder-content {
-display: none;
-}
-#originalPreview, #preview {
-max-width: 100%;
-max-height: 300px;
-object-fit: contain;
-}
-#originalPreview.d-none,
-#preview.d-none {
-display: none;
-}
-#originalInfo, #resizedInfo {
-background-color: #f8f9fa;
-padding: 10px;
-border-radius: 0.25rem;
-margin-top: 10px;
-font-size: 0.9em;
-}
-#originalInfo p, #resizedInfo p {
-margin: 0.3rem 0;
+form input, form textarea {
+max-width: 500px;
 }
 ```
 
-SubPages\ImageResizer\ImageResizer.html:
+SubPages\NBT\NBT.html:
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Image Resizer</title>
+<title>Newspaper Business Tracker</title>
 <script>
 fetch('../../Assets/Utils/cdn.html')
-.then(res => res.text())
-.then(data => document.head.insertAdjacentHTML('beforeend', data));
+.then(r => r.text())
+.then(d => document.head.insertAdjacentHTML('beforeend', d));
 </script>
-<link rel="stylesheet" href="ImageResizer.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="NBT.css" />
 </head>
-<body>
-<div class="container my-5">
-<h2 class="text-center mb-4">Image Resizer</h2>
-<div class="mb-3">
-<input type="file" id="inputImage" class="form-control" accept="image/*" />
+<body class="container my-5">
+<h2 class="text-center mb-4">📰 Newspaper Business Tracker</h2>
+<details class="mb-3">
+<summary class="h5">Billing</summary>
+<form id="billingForm" class="mt-3">
+<div class="input-group mb-2">
+<select class="form-select selectpicker" data-live-search="true" multiple id="billingCustomer" name="customer[]">
+</select>
+<button class="btn btn-outline-secondary" type="button" id="addBillingCustomer">+ New Customer</button>
 </div>
-<div class="row mb-4">
-<div class="col-md-6">
-<h5>Original</h5>
-<div class="preview-container">
-<div id="originalPlaceholder" class="placeholder-content">
-<i class="bi bi-card-image placeholder-icon"></i>
-<p>Upload an image to see the original</p>
+<div class="input-group mb-2">
+<input type="date" class="form-control" name="date" id="billingDate" required>
+<button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('billingDate').value = new Date().toISOString().split('T')[0]">📅 Today</button>
 </div>
-<img id="originalPreview" class="img-fluid rounded shadow-sm d-none" alt="Original Preview" />
+<input type="number" class="form-control mb-2" name="amount" placeholder="Amount Paid" required>
+<input type="number" class="form-control mb-2" name="advance" placeholder="Advance (if any)">
+<textarea class="form-control mb-2" name="description" rows="2" placeholder="Description / Notes"></textarea>
+<button class="btn btn-primary">Save Billing</button>
+</form>
+<div class="mt-3">
+<button class="btn btn-sm btn-outline-primary" id="refreshBilling">🔄 Refresh Records</button>
+<table class="table table-sm table-striped mt-2" id="billingTable">
+<thead><tr><th>Customer</th><th>Date</th><th>Amount</th><th>Advance</th><th>Description</th></tr></thead>
+<tbody></tbody>
+</table>
 </div>
-<div id="originalInfo" class="mt-2">
-<p>Dimensions: <span id="originalDimensions">-</span></p>
-<p>File Size: <span id="originalSize">-</span></p>
+</details>
+<details class="mb-3">
+<summary class="h5">Retail Sell</summary>
+<form id="retailForm" class="mt-3">
+<div class="input-group mb-2">
+<select class="form-select selectpicker" data-live-search="true" multiple id="retailCustomer" name="customer[]">
+</select>
+<button class="btn btn-outline-secondary" type="button" id="addRetailCustomer">+ New Customer</button>
 </div>
+<div class="input-group mb-2">
+<input type="date" class="form-control" name="date" id="retailDate" required>
+<button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('retailDate').value = new Date().toISOString().split('T')[0]">📅 Today</button>
 </div>
-<div class="col-md-6">
-<h5>Resized</h5>
-<div class="preview-container">
-<div id="resizedPlaceholder" class="placeholder-content">
-<i class="bi bi-arrow-left-right placeholder-icon"></i>
-<p>Adjust settings to see the resized version</p>
+<input type="number" class="form-control mb-2" name="amount" placeholder="Total Amount" required>
+<input type="number" class="form-control mb-2" name="paid" placeholder="Paid Amount" required>
+<input type="number" class="form-control mb-2" name="remaining" placeholder="Remaining" readonly>
+<textarea class="form-control mb-2" name="description" rows="2" placeholder="Description / Notes"></textarea>
+<button class="btn btn-success">Save Retail</button>
+</form>
+<div class="mt-3">
+<button class="btn btn-sm btn-outline-success" id="refreshRetail">🔄 Refresh Records</button>
+<table class="table table-sm table-striped mt-2" id="retailTable">
+<thead><tr><th>Customer</th><th>Date</th><th>Amount</th><th>Paid</th><th>Remaining</th><th>Description</th></tr></thead>
+<tbody></tbody>
+</table>
 </div>
-<img id="preview" class="img-fluid rounded shadow-sm d-none" alt="Resized Preview" />
+</details>
+<details class="mb-3">
+<summary class="h5">New Changes</summary>
+<form id="changesForm" class="mt-3">
+<div class="input-group mb-2">
+<select class="form-select selectpicker" data-live-search="true" multiple id="changesCustomer" name="customer[]">
+</select>
+<button class="btn btn-outline-secondary" type="button" id="addChangesCustomer">+ New Customer</button>
 </div>
-<div id="resizedInfo" class="mt-2">
-<p>Dimensions: <span id="resizedDimensions">-</span></p>
-<p>File Size: <span id="resizedSize">-</span></p>
+<div class="input-group mb-2">
+<input type="date" class="form-control" name="date" id="changesDate" required>
+<button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('changesDate').value = new Date().toISOString().split('T')[0]">📅 Today</button>
 </div>
+<div class="input-group mb-2">
+<select class="form-select selectpicker" data-live-search="true" id="paperSelect" name="paper">
+</select>
+<button class="btn btn-outline-secondary" type="button" id="addPaper">+ New Paper</button>
 </div>
+<textarea class="form-control mb-2" name="description" rows="3" placeholder="Describe the change"></textarea>
+<button class="btn btn-warning">Save Change</button>
+</form>
+<div class="mt-3">
+<button class="btn btn-sm btn-outline-warning" id="refreshChanges">🔄 Refresh Records</button>
+<table class="table table-sm table-striped mt-2" id="changesTable">
+<thead><tr><th>Customer</th><th>Date</th><th>Paper</th><th>Description</th></tr></thead>
+<tbody></tbody>
+</table>
 </div>
-<div class="row g-3 mb-4">
-<div class="col-md-5">
-<label for="widthInput" class="form-label">Width (px)</label>
-<input type="number" id="widthInput" class="form-control" min="1" />
-</div>
-<div class="col-md-5">
-<label for="heightInput" class="form-label">Height (px)</label>
-<input type="number" id="heightInput" class="form-control" min="1" />
-</div>
-<div class="col-md-2 d-flex align-items-end">
-<div class="form-check form-switch">
-<input class="form-check-input" type="checkbox" id="maintainAspect" checked>
-<label class="form-check-label" for="maintainAspect">Lock Ratio</label>
-</div>
-</div>
-<div class="col-12">
-<label for="qualityInput" class="form-label">Quality: <span id="qualityLabel">90%</span></label>
-<input type="range" id="qualityInput" class="form-range" min="0.1" max="1" step="0.1" value="0.9" />
-</div>
-</div>
-<div class="text-center">
-<button id="downloadBtn" class="btn btn-success d-none">Download Resized Image</button>
-</div>
-<canvas id="canvas" class="d-none"></canvas>
-</div>
-<script src="ImageResizer.js"></script>
+</details>
+<div id="status" class="mt-4 text-center text-muted"></div>
+<script type="module" src="NBT.js"></script>
 </body>
 </html>
 ```
 
-SubPages\ImageResizer\ImageResizer.js:
+SubPages\NBT\NBT.js:
 ```js
+import { initBilling } from "./SubJS/billing.js";
+import { initRetail } from "./SubJS/retail.js";
+import { initChanges } from "./SubJS/changes.js";
 document.addEventListener("DOMContentLoaded", () => {
-const inputImage = document.getElementById("inputImage");
-const originalPreview = document.getElementById("originalPreview");
-const preview = document.getElementById("preview");
-const widthInput = document.getElementById("widthInput");
-const heightInput = document.getElementById("heightInput");
-const qualityInput = document.getElementById("qualityInput");
-const qualityLabel = document.getElementById("qualityLabel");
-const downloadBtn = document.getElementById("downloadBtn");
-const maintainAspect = document.getElementById("maintainAspect");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const originalDimensions = document.getElementById("originalDimensions");
-const originalSize = document.getElementById("originalSize");
-const originalInfo = document.getElementById("originalInfo");
-const originalPlaceholder = document.getElementById("originalPlaceholder");
-const resizedPlaceholder = document.getElementById("resizedPlaceholder");
-const resizedDimensions = document.getElementById("resizedDimensions");
-const resizedSize = document.getElementById("resizedSize");
-let originalImage = new Image();
-let originalAspectRatio = 0;
-let originalFileSize = 0;
-let lastChangedInput = null;
-const formatFileSize = (bytes) => {
-if (bytes === 0) return '0 Bytes';
-const k = 1024;
-const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-const i = Math.floor(Math.log(bytes) / Math.log(k));
-return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-};
-const updateDimensions = (changedInput) => {
-if (!maintainAspect.checked || !originalAspectRatio) return;
-if (changedInput === 'width') {
-const newHeight = Math.round(widthInput.value / originalAspectRatio);
-heightInput.value = newHeight;
-} else if (changedInput === 'height') {
-const newWidth = Math.round(heightInput.value * originalAspectRatio);
-widthInput.value = newWidth;
-}
-};
-const updatePlaceholders = () => {
-originalPlaceholder.style.display = originalImage.src ? 'none' : 'block';
-resizedPlaceholder.style.display = (preview.src && !preview.classList.contains('d-none')) ? 'none' : 'block';
-};
-const updatePreview = () => {
-if (!originalImage.src) return;
-const newWidth = parseInt(widthInput.value) || originalImage.width;
-const newHeight = parseInt(heightInput.value) || originalImage.height;
-const quality = parseFloat(qualityInput.value);
-canvas.width = newWidth;
-canvas.height = newHeight;
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+initBilling();
+initRetail();
+initChanges();
+});
+```
+
+SubPages\NBT\SubJS\billing.js:
+```js
+import { sendToSheet, fetchFromSheet, sendToWhatsApp, showStatus } from "./utils.js";
+export function initBilling() {
+const form = document.getElementById("billingForm");
+const tableBody = document.querySelector("#billingTable tbody");
+const refreshBtn = document.getElementById("refreshBilling");
+const addCustomerBtn = document.getElementById("addBillingCustomer");
+const customerSelect = document.getElementById("billingCustomer");
+if (!form) return;
+form.addEventListener("submit", async e => {
+e.preventDefault();
+const data = Object.fromEntries(new FormData(form).entries());
 try {
-ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
-const resizedDataUrl = canvas.toDataURL("image/jpeg", quality);
-preview.onload = () => {
-preview.classList.remove("d-none");
-updatePlaceholders();
-};
-preview.src = resizedDataUrl;
-downloadBtn.classList.remove("d-none");
-downloadBtn.dataset.url = resizedDataUrl;
-resizedDimensions.textContent = `${newWidth} × ${newHeight} px`;
-const resizedFileSize = Math.round((resizedDataUrl.length - 22) * 3 / 4);
-resizedSize.textContent = formatFileSize(resizedFileSize);
-} catch (error) {
-console.error("Error resizing image:", error);
-preview.classList.add("d-none");
-updatePlaceholders();
-}
-};
-inputImage.addEventListener("change", () => {
-const file = inputImage.files[0];
-if (!file) return;
-const originalFileName = file.name;
-const fileNameParts = originalFileName.split('.');
-const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop() : '';
-const fileNameWithoutExt = fileNameParts.join('.');
-downloadBtn.dataset.originalName = fileNameWithoutExt;
-downloadBtn.dataset.extension = fileExtension;
-originalFileSize = file.size;
-originalSize.textContent = formatFileSize(originalFileSize);
-originalInfo.style.display = 'block';
-const reader = new FileReader();
-reader.onload = e => {
-originalImage.onload = () => {
-widthInput.value = originalImage.width;
-heightInput.value = originalImage.height;
-originalAspectRatio = originalImage.width / originalImage.height;
-originalDimensions.textContent = `${originalImage.width} × ${originalImage.height} px`;
-originalPreview.src = e.target.result;
-originalPreview.classList.remove("d-none");
-updatePreview();
-updatePlaceholders();
-};
-originalImage.src = e.target.result;
-};
-reader.readAsDataURL(file);
-});
-qualityInput.addEventListener("input", () => {
-const quality = Math.round(qualityInput.value * 100);
-qualityLabel.textContent = `${quality}%`;
-updatePreview();
-});
-widthInput.addEventListener("input", () => {
-lastChangedInput = 'width';
-updateDimensions('width');
-updatePreview();
-});
-heightInput.addEventListener("input", () => {
-lastChangedInput = 'height';
-updateDimensions('height');
-updatePreview();
-});
-maintainAspect.addEventListener("change", () => {
-if (maintainAspect.checked && lastChangedInput) {
-updateDimensions(lastChangedInput);
-updatePreview();
+await sendToSheet(data, "billing");
+showStatus("Billing saved ✅");
+const message = `🧾 *Billing Record*
+👤 Customer: ${data["customer[]"]}
+📅 Date: ${data.date}
+💰 Amount: ₹${data.amount}
+💵 Advance: ₹${data.advance || 0}
+📝 Note: ${data.description || "-"}`;
+sendToWhatsApp(message);
+form.reset();
+loadRecords();
+} catch (err) {
+console.error(err);
+showStatus("Error saving billing ❌", true);
 }
 });
-downloadBtn.addEventListener("click", () => {
-const link = document.createElement("a");
-link.href = downloadBtn.dataset.url;
-const width = widthInput.value;
-const height = heightInput.value;
-const originalName = downloadBtn.dataset.originalName || 'resized';
-const extension = downloadBtn.dataset.extension ? `.${downloadBtn.dataset.extension}` : '.jpg';
-link.download = `${originalName}_${width}x${height}${extension}`;
-link.click();
+if (refreshBtn) refreshBtn.addEventListener("click", loadRecords);
+if (addCustomerBtn) {
+addCustomerBtn.addEventListener("click", () => {
+const name = prompt("Enter new customer name:");
+if (name) {
+const option = new Option(name, name, true, true);
+customerSelect.add(option);
+$(customerSelect).selectpicker("refresh");
+}
 });
-updatePlaceholders();
+}
+async function loadRecords() {
+const rows = await fetchFromSheet("billing");
+tableBody.innerHTML = rows
+.map(
+r => `<tr>
+<td>${r.Customer}</td>
+<td>${r.Date}</td>
+<td>${r.Amount}</td>
+<td>${r.Advance}</td>
+<td>${r.Description}</td>
+</tr>`
+)
+.join("");
+}
+loadRecords();
+}
+```
+
+SubPages\NBT\SubJS\changes.js:
+```js
+import { sendToSheet, fetchFromSheet, sendToWhatsApp, showStatus } from "./utils.js";
+export function initChanges() {
+const form = document.getElementById("changesForm");
+const tableBody = document.querySelector("#changesTable tbody");
+const refreshBtn = document.getElementById("refreshChanges");
+const addCustomerBtn = document.getElementById("addChangesCustomer");
+const addPaperBtn = document.getElementById("addPaper");
+const customerSelect = document.getElementById("changesCustomer");
+const paperSelect = document.getElementById("paperSelect");
+if (!form) return;
+form.addEventListener("submit", async e => {
+e.preventDefault();
+const data = Object.fromEntries(new FormData(form).entries());
+try {
+await sendToSheet(data, "changes");
+showStatus("Change saved ✅");
+const message = `📰 *Change Record*
+👤 Customer: ${data["customer[]"]}
+📅 Date: ${data.date}
+🗞️ Paper: ${data.paper}
+📝 Change: ${data.description || "-"}`;
+sendToWhatsApp(message);
+form.reset();
+loadRecords();
+} catch (err) {
+console.error(err);
+showStatus("Error saving change ❌", true);
+}
 });
+if (refreshBtn) refreshBtn.addEventListener("click", loadRecords);
+if (addCustomerBtn) {
+addCustomerBtn.addEventListener("click", () => {
+const name = prompt("Enter new customer name:");
+if (name) {
+const option = new Option(name, name, true, true);
+customerSelect.add(option);
+$(customerSelect).selectpicker("refresh");
+}
+});
+}
+if (addPaperBtn) {
+addPaperBtn.addEventListener("click", () => {
+const paper = prompt("Enter new paper name:");
+if (paper) {
+const option = new Option(paper, paper, true, true);
+paperSelect.add(option);
+$(paperSelect).selectpicker("refresh");
+}
+});
+}
+async function loadRecords() {
+const rows = await fetchFromSheet("changes");
+tableBody.innerHTML = rows
+.map(
+r => `<tr>
+<td>${r.Customer}</td>
+<td>${r.Date}</td>
+<td>${r.Paper}</td>
+<td>${r.Description}</td>
+</tr>`
+)
+.join("");
+}
+loadRecords();
+}
+```
+
+SubPages\NBT\SubJS\retail.js:
+```js
+import { sendToSheet, fetchFromSheet, sendToWhatsApp, showStatus } from "./utils.js";
+export function initRetail() {
+const form = document.getElementById("retailForm");
+const tableBody = document.querySelector("#retailTable tbody");
+const refreshBtn = document.getElementById("refreshRetail");
+const addCustomerBtn = document.getElementById("addRetailCustomer");
+const customerSelect = document.getElementById("retailCustomer");
+if (!form) return;
+const paidInput = form.querySelector("[name=paid]");
+const amountInput = form.querySelector("[name=amount]");
+const remainingInput = form.querySelector("[name=remaining]");
+[amountInput, paidInput].forEach(input =>
+input.addEventListener("input", () => {
+const amount = parseFloat(amountInput.value) || 0;
+const paid = parseFloat(paidInput.value) || 0;
+remainingInput.value = amount - paid;
+})
+);
+form.addEventListener("submit", async e => {
+e.preventDefault();
+const data = Object.fromEntries(new FormData(form).entries());
+try {
+await sendToSheet(data, "retail");
+showStatus("Retail saved ✅");
+const message = `🏪 *Retail Record*
+👤 Customer: ${data["customer[]"]}
+📅 Date: ${data.date}
+💰 Total: ₹${data.amount}
+💵 Paid: ₹${data.paid}
+💳 Remaining: ₹${data.remaining}
+📝 Note: ${data.description || "-"}`;
+sendToWhatsApp(message);
+form.reset();
+remainingInput.value = "";
+loadRecords();
+} catch (err) {
+console.error(err);
+showStatus("Error saving retail ❌", true);
+}
+});
+if (refreshBtn) refreshBtn.addEventListener("click", loadRecords);
+if (addCustomerBtn) {
+addCustomerBtn.addEventListener("click", () => {
+const name = prompt("Enter new customer name:");
+if (name) {
+const option = new Option(name, name, true, true);
+customerSelect.add(option);
+$(customerSelect).selectpicker("refresh");
+}
+});
+}
+async function loadRecords() {
+const rows = await fetchFromSheet("retail");
+tableBody.innerHTML = rows
+.map(
+r => `<tr>
+<td>${r.Customer}</td>
+<td>${r.Date}</td>
+<td>${r.Amount}</td>
+<td>${r.Paid}</td>
+<td>${r.Remaining}</td>
+<td>${r.Description}</td>
+</tr>`
+)
+.join("");
+}
+loadRecords();
+}
+```
+
+SubPages\NBT\SubJS\utils.js:
+```js
+import BINGO from "../../Assets/Utils/Bingo.js";
+export async function sendToSheet(data, type) {
+try {
+const res = await fetch(`${BINGO.SheetConfig.url}?type=${type}`, {
+method: "POST",
+body: JSON.stringify(data),
+headers: { "Content-Type": "application/json" }
+});
+return await res.json();
+} catch (err) {
+console.error("Error sending to sheet:", err);
+}
+}
+export async function fetchFromSheet(type) {
+try {
+const res = await fetch(`${BINGO.SheetConfig.url}?type=${type}`);
+return await res.json();
+} catch (err) {
+console.error("Error fetching from sheet:", err);
+return [];
+}
+}
+export function sendToWhatsApp(message, number = BINGO.WhatsAppNumber) {
+if (!number) {
+console.error("WhatsApp number not set in Bingo.js");
+return;
+}
+const encodedMsg = encodeURIComponent(message);
+const url = `https:
+window.open(url, "_blank");
+}
+export function showStatus(msg, isError = false) {
+const status = document.getElementById("status");
+if (!status) return;
+status.textContent = msg;
+status.className = isError ? "text-danger" : "text-success";
+setTimeout(() => (status.textContent = ""), 3000);
+}
 ```
 

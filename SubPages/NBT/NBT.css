@@ -1,0 +1,14 @@
+details summary {
+  cursor: pointer;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+}
+details[open] summary {
+  background: #e9ecef;
+  font-weight: bold;
+}
+form input, form textarea {
+  max-width: 500px;
+}
