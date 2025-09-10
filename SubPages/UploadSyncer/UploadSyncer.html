@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Differ - Access</title>
+<!-- CDN Links -->
+<script>
+    fetch('../../Assets/Utils/cdn.html')
+    .then(response => response.text())
+    .then(data => document.head.insertAdjacentHTML('beforeend', data));
+</script>
+<!-- CDN Links -->
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="UploadSyncer.css">
+</head>
+<body>
+<div id="password-protection" class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
+        <h4 class="card-title text-center mb-4">Enter Password to Access File Differ</h4>
+        <div class="mb-3">
+            <input type="password" class="form-control" id="passwordInput" placeholder="Enter volcanic glass">
+        </div>
+        <button class="btn btn-primary w-100" id="submitPassword">Access Tool</button>
+        <p id="passwordError" class="text-danger mt-3 d-none">Incorrect password. Please try again.</p>
+    </div>
+</div>
+<script type="module" src="UploadSyncer.js"></script>
+</body>
+</html>

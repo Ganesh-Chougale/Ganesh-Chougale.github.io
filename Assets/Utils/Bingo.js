@@ -1,5 +1,6 @@
 const BINGO = {
-  PieValue: "3.1415",
+  PieValue: "3.14159",
+  UploadSyncer: "obsidian",
 
   DriveConfig: {
     // Google Drive API Configuration
@@ -13,8 +14,8 @@ const BINGO = {
   },
 
   // ✅ Google Sheets Web App URL
-  SheetConfig: {
-    url: "https://script.google.com/macros/s/AKfycbw5Symtsxwuol2yZPCZ6gR7xOuSjnRREtyJ1vB1bA5mIypHCZB8Pa_aZNe1j3Ay12E/exec"
+  scriptUrl: {
+    UploadSyncerUrl: "https://script.google.com/macros/s/AKfycbwJowuxou3SvmdaSH7Z2Rt1gVYmRvYjRSeo4J1r2PcPeSwU4WplNPNBBDQZk_h3WC2nOw/exec"
   },
 
   // ✅ WhatsApp Number (country code + number, no + sign)
