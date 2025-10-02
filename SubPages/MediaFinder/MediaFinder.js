@@ -14,6 +14,7 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
     return;
   }
 
+  // Build query with file types
   let finalQuery = "";
   if (fileType === "-1") {
     finalQuery = `${query} -inurl:(jsp|pl|php|html|aspx|htm|cf|shtml) intitle:index.of`;
@@ -22,23 +23,26 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
   }
 
   let url = "";
+
   switch (engine) {
     case "google":
-      url = (sortBy === "date") ?
-        `https://www.google.com/search?q=${encodeURIComponent(finalQuery)}&tbs=qdr:m,sbd:${sortOrder === 'desc' ? 1 : 0}` :
-        `https://www.google.com/search?q=${encodeURIComponent(finalQuery)}`;
+      // Google date sort fix
+      let tbs = "";
+      if (sortBy === "date") {
+        tbs = sortOrder === "desc" ? "qdr:m" : "qdr:y"; // descending = last month, ascending = last year
+      }
+      url = `https://www.google.com/search?q=${encodeURIComponent(finalQuery)}` + (tbs ? `&tbs=${tbs}` : "");
       break;
 
     case "startpage":
-      url = (sortBy === "date") ?
-        `https://www.startpage.com/do/dsearch?query=${encodeURIComponent(finalQuery)}&with_date=1&sort=${sortOrder}` :
-        `https://www.startpage.com/do/dsearch?query=${encodeURIComponent(finalQuery)}`;
+      url = `https://www.startpage.com/do/dsearch?query=${encodeURIComponent(finalQuery)}`;
+      if (sortBy === "date") url += `&with_date=1&sort=${sortOrder}`;
       break;
 
     case "searx":
-      if (sortBy === "date") url = `https://searx.me/?q=${encodeURIComponent(finalQuery)}&sort=date_${sortOrder}`;
-      else if (sortBy === "size") url = `https://searx.me/?q=${encodeURIComponent(finalQuery)}&sort=filesize_${sortOrder}`;
-      else url = `https://searx.me/?q=${encodeURIComponent(finalQuery)}`;
+      url = `https://searx.me/?q=${encodeURIComponent(finalQuery)}`;
+      if (sortBy === "date") url += `&sort=date_${sortOrder}`;
+      else if (sortBy === "size") url += `&sort=filesize_${sortOrder}`;
       break;
 
     case "filepursuit":
