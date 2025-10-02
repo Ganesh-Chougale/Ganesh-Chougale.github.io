@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Developer Tools</title>
 
-    <!-- CDN Links -->
-    <script>
-        fetch('../Assets/Utils/cdn.html')
-        .then(response => response.text())
-        .then(data => document.head.insertAdjacentHTML('beforeend', data));
-    </script>
-    <!-- CDN Links -->
+  <!-- CDN Links -->
+  <script>
+    fetch('../Assets/Utils/cdn.html')
+      .then(response => response.text())
+      .then(data => document.head.insertAdjacentHTML('beforeend', data));
+  </script>
+  <!-- CDN Links -->
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="Tools.css">
 </head>
+
 <body>
   <!-- Password Protection -->
   <div id="password-protection" class="password-container">
@@ -57,38 +59,50 @@
         </div>
       </div>
 
-    <div class="col">
-      <div class="card h-100 tool-card">
-        <div class="card-body text-center">
-          <i class="fas fa-file-code fa-3x mb-3 text-danger"></i>
-          <h5 class="card-title">Text Data Converter</h5>
-          <p class="card-text">Convert between CSV, JSON.</p>
-          <a href="./DataConverter/DataConverter.html" class="btn btn-outline-danger mt-3">Go to Tool</a>
+      <div class="col">
+        <div class="card h-100 tool-card">
+          <div class="card-body text-center">
+            <i class="fas fa-file-code fa-3x mb-3 text-danger"></i>
+            <h5 class="card-title">Text Data Converter</h5>
+            <p class="card-text">Convert between CSV, JSON.</p>
+            <a href="./DataConverter/DataConverter.html" class="btn btn-outline-danger mt-3">Go to Tool</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col">
-      <div class="card h-100 tool-card">
-        <div class="card-body text-center">
-          <i class="fas fa-image fa-3x mb-3 text-info"></i>
-          <h5 class="card-title">Image Resizer</h5>
-          <p class="card-text">Resize image dimensions & compress file size.</p>
-          <a href="./ImageResizer/ImageResizer.html" class="btn btn-outline-info mt-3">Go to Tool</a>
+      <div class="col">
+        <div class="card h-100 tool-card">
+          <div class="card-body text-center">
+            <i class="fas fa-image fa-3x mb-3 text-info"></i>
+            <h5 class="card-title">Image Resizer</h5>
+            <p class="card-text">Resize image dimensions & compress file size.</p>
+            <a href="./ImageResizer/ImageResizer.html" class="btn btn-outline-info mt-3">Go to Tool</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="col">
-      <div class="card h-100 tool-card">
-        <div class="card-body text-center">
-          <i class="fas fa-newspaper fa-3x mb-3 text-dark"></i>
-          <h5 class="card-title">Newspaper Business Tracker</h5>
-          <p class="card-text">Track billing, retail sales & changes easily.</p>
-          <a href="./NBT/NBT.html" class="btn btn-outline-dark mt-3">Go to Tool</a>
+      <div class="col">
+        <div class="card h-100 tool-card">
+          <div class="card-body text-center">
+            <i class="fas fa-newspaper fa-3x mb-3 text-dark"></i>
+            <h5 class="card-title">Newspaper Business Tracker</h5>
+            <p class="card-text">Track billing, retail sales & changes easily.</p>
+            <a href="./NBT/NBT.html" class="btn btn-outline-dark mt-3">Go to Tool</a>
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="col">
+        <div class="card h-100 tool-card">
+          <div class="card-body text-center">
+            <i class="fas fa-photo-video fa-3x mb-3 text-secondary"></i>
+            <h5 class="card-title">Media Finder</h5>
+            <p class="card-text">Search and fetch media files (images, audio, video) from given sources.</p>
+            <a href="./MediaFinder/MediaFinder.html" class="btn btn-outline-secondary mt-3">Go to Tool</a>
+          </div>
+        </div>
+      </div>
+
 
       <div class="col">
         <div class="card h-100 tool-card">
@@ -109,4 +123,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="Tools.js"></script>
 </body>
+
 </html>
