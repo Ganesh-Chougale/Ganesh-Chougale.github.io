@@ -3,44 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Text File Converter</title>
+    <title>Data Converter</title>
+
     <!-- CDN Links -->
     <script>
-        fetch('../../Assets/Utils/cdn.html')
-        .then(response => response.text())
-        .then(data => document.head.insertAdjacentHTML('beforeend', data));
+      fetch('../../Assets/Utils/cdn.html')
+        .then(r => r.text())
+        .then(d => document.head.insertAdjacentHTML('beforeend', d));
     </script>
-    <!-- CDN Links -->
+    <!-- XLSX Library for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
     <link rel="stylesheet" href="DataConverter.css" />
   </head>
+
   <body>
     <div class="container my-5">
-      <h2 class="mb-4 text-center">Text File Converter</h2>
+      <h2 class="mb-4 text-center">Data Converter</h2>
+
       <div class="mb-3">
         <input type="file" id="inputFile" class="form-control" />
       </div>
-      <div class="mb-3">
-        <label for="outputFormat">Convert to:</label>
-        <select id="outputFormat" class="form-select">
-          <option value="csv">CSV</option>
-          <option value="json">JSON</option>
-        </select>
-      </div>
-      <button id="convertBtn" class="btn btn-primary mb-4">Convert</button>
 
+      <!-- preview toggle (hidden until file chosen) -->
+      <div id="previewOptions" class="d-none">
+        <label class="me-2 fw-bold">Preview as:</label>
+        <div id="previewRadios" class="btn-group" role="group" aria-label="Preview options">
+          <!-- radio buttons injected dynamically -->
+        </div>
+      </div>
+
+      <!-- result area -->
       <div id="resultContainer" class="d-none position-relative">
-        <div class="d-flex justify-content-end mb-2 gap-2">
-          <button id="downloadBtn" class="btn btn-success btn-sm">
-            Download
-          </button>
+        <!-- text preview controls -->
+        <div id="textButtons" class="d-flex justify-content-end mb-2 gap-2 d-none">
+          <button id="downloadBtn" class="btn btn-success btn-sm">Download</button>
           <button id="copyBtn" class="btn btn-secondary btn-sm">Copy</button>
         </div>
-        <textarea
-          id="outputText"
-          class="form-control"
-          rows="15"
-          readonly
-        ></textarea>
+
+        <!-- text preview (csv or json) -->
+        <textarea id="outputText" class="form-control d-none" rows="15" readonly></textarea>
+
+        <!-- table preview -->
+        <div id="tableContainer" class="d-none">
+          <div class="export-buttons">
+            <button id="exportMarkdownBtn" class="btn btn-outline-dark btn-sm">Export Markdown</button>
+            <button id="exportExcelBtn" class="btn btn-outline-success btn-sm">Export Excel</button>
+          </div>
+          <table class="table table-striped table-bordered mt-3">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 

@@ -1,13 +1,46 @@
+/* DataConverter.css */
 #resultContainer {
   margin-top: 1rem;
 }
-
 #outputText {
   font-family: 'Consolas', 'Courier New', monospace;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-
 #downloadBtn, #copyBtn {
   font-size: 0.85rem;
 }
+#tableContainer {
+  margin-top: 1rem;
+  overflow-x: auto;
+  max-height: 70vh;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+th, td {
+  padding: 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
+.export-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+/* small spacing for radio toggle area */
+#previewOptions { margin-bottom: 0.75rem; }

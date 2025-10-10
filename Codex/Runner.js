@@ -6,9 +6,9 @@ const path = require("path");
 const config = {
   runCodeSummary: true,
   runFolderStructurer: true,
-  runFixedText: true,
-  runTriedSolutions: true,
-  runFinalInstruction: true,
+  runFixedText: false,
+  runTriedSolutions: false,
+  runFinalInstruction: false,
 };
 
 // small helpers (no external PathMaker)
