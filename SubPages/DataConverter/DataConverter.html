@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Converter</title>
-
     <!-- CDN Links -->
     <script>
       fetch('../../Assets/Utils/cdn.html')
@@ -13,19 +12,37 @@
     </script>
     <!-- XLSX Library for Excel Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <link rel="stylesheet" href="DataConverter.css" />
+    <link rel="stylesheet" href="./DataConverter.css" />
   </head>
-
   <body>
     <div class="container my-5">
       <h2 class="mb-4 text-center">Data Converter</h2>
 
-      <div class="mb-3">
+      <!-- Step 1: Choose Input Mode -->
+      <div id="inputMode" class="mb-3">
+        <label class="me-2 fw-bold">Input Mode:</label>
+        <div class="btn-group" role="group">
+          <input type="radio" class="btn-check" name="inputMode" id="modeUpload" autocomplete="off" value="upload" checked>
+          <label class="btn btn-outline-primary" for="modeUpload">Upload File</label>
+
+          <input type="radio" class="btn-check" name="inputMode" id="modePaste" autocomplete="off" value="paste">
+          <label class="btn btn-outline-primary" for="modePaste">Paste Text</label>
+        </div>
+      </div>
+
+      <!-- Upload Input (existing) -->
+      <div id="uploadContainer">
         <input type="file" id="inputFile" class="form-control" />
       </div>
 
-      <!-- preview toggle (hidden until file chosen) -->
+      <!-- Paste Input -->
+      <div id="pasteContainer" class="d-none mb-3">
+        <label class="fw-bold">Paste CSV / JSON here:</label>
+        <textarea id="pasteInput" class="form-control" rows="8" placeholder="Paste CSV or JSON"></textarea>
+        <button id="pasteBtn" class="btn btn-primary mt-2">Convert / Preview</button>
+      </div>
+
+      <!-- preview toggle (hidden until data provided) -->
       <div id="previewOptions" class="d-none">
         <label class="me-2 fw-bold">Preview as:</label>
         <div id="previewRadios" class="btn-group" role="group" aria-label="Preview options">
@@ -40,10 +57,8 @@
           <button id="downloadBtn" class="btn btn-success btn-sm">Download</button>
           <button id="copyBtn" class="btn btn-secondary btn-sm">Copy</button>
         </div>
-
         <!-- text preview (csv or json) -->
         <textarea id="outputText" class="form-control d-none" rows="15" readonly></textarea>
-
         <!-- table preview -->
         <div id="tableContainer" class="d-none">
           <div class="export-buttons">
@@ -57,7 +72,6 @@
         </div>
       </div>
     </div>
-
-    <script src="DataConverter.js"></script>
+    <script src="./DataConverter.js"></script>
   </body>
 </html>
