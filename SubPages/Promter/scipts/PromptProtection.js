@@ -1,4 +1,4 @@
-import BINGO from "../../../Assets/Utils/Bingo.js";
+import BINGO from "../../Assets/Utils/Bingo.js";
 
 document.addEventListener('DOMContentLoaded', function () {
   try {
