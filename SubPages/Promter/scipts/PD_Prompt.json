@@ -7,7 +7,7 @@
       "conditionalSection": "Expected Structure:\n{includeComments}\n{includeExamples}",
       "comments": "// Include comments explaining each folder purpose",
       "examples": "// Example: src/components/, utils/, assets/, tests/",
-      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any existing working feature & functionality while doing this."
+      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any other existing working feature & functionality while doing this."
     },
     "entire-code": {
       "title": "Complete Code Generator",
@@ -16,7 +16,7 @@
       "conditionalSection": "{includeComments}\n{includeExamples}",
       "comments": "// Include comprehensive comments throughout the code",
       "examples": "// Include usage examples and test cases",
-      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any existing working feature & functionality while doing this."
+      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any other existing working feature & functionality while doing this."
     },
     "snippet": {
       "title": "Code Snippet Generator",
@@ -25,7 +25,7 @@
       "conditionalSection": "Requirements:\n{includeComments}\n{includeExamples}",
       "comments": "// Include inline comments explaining the logic",
       "examples": "// Include usage example",
-      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any existing working feature & functionality while doing this."
+      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any other existing working feature & functionality while doing this."
     },
     "error-handler": {
       "title": "Error Handler & Debugger",
@@ -34,7 +34,7 @@
       "conditionalSection": "\n{includeComments}\n{includeExamples}",
       "comments": "// Include detailed explanation of the root cause",
       "examples": "// Include multiple solution approaches",
-      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any existing working feature & functionality while doing this."
+      "strictRule": "\n⚠️ STRICT RULE: Do not touch or disturb any other existing working feature & functionality while doing this."
     }
   }
 }
