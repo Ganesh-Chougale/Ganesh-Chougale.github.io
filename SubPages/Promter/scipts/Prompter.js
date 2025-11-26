@@ -52,6 +52,24 @@ class Prompter {
     setupToast() {
         this.toastElement = document.getElementById('copyToast');
         this.toast = new bootstrap.Toast(this.toastElement);
+        
+        // Setup synchronized scrolling
+        this.setupScrollSync();
+    }
+
+    setupScrollSync() {
+        const lineNumbers = document.getElementById('lineNumbers');
+        const copyArea = document.getElementById('copyArea');
+        
+        // Sync scroll from text to line numbers
+        copyArea.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = copyArea.scrollTop;
+        });
+        
+        // Sync scroll from line numbers to text
+        lineNumbers.addEventListener('scroll', () => {
+            copyArea.scrollTop = lineNumbers.scrollTop;
+        });
     }
 
     selectGenerator(element) {
@@ -94,7 +112,11 @@ class Prompter {
 
         // Update copy area (simulate processing time)
         setTimeout(() => {
-            document.getElementById('copyArea').value = processedPrompt;
+            const copyArea = document.getElementById('copyArea');
+            copyArea.textContent = processedPrompt;
+            
+            // Update line numbers
+            this.updateLineNumbers(processedPrompt);
             
             // Remove loading state
             generateBtn.classList.remove('loading');
@@ -254,17 +276,30 @@ class Prompter {
         return match ? match.join('\n') : 'Not provided';
     }
 
-    async copyToClipboard() {
-        const copyArea = document.getElementById('copyArea');
-        const copyBtn = document.getElementById('copyBtn');
+    updateLineNumbers(text) {
+        const lineNumbers = document.getElementById('lineNumbers');
+        const lines = text.split('\n').length;
         
-        if (!copyArea.value.trim()) {
+        // Generate line numbers
+        let lineNumbersHtml = '';
+        for (let i = 1; i <= lines; i++) {
+            lineNumbersHtml += i + '\n';
+        }
+        
+        lineNumbers.textContent = lineNumbersHtml;
+    }
+
+    async copyToClipboard() {
+        const copyBtn = document.getElementById('copyBtn');
+        const copyArea = document.getElementById('copyArea');
+        
+        if (!copyArea.textContent.trim() || copyArea.textContent === 'Generated text will appear here...') {
             this.showNotification('Nothing to copy. Generate a prompt first!', 'warning');
             return;
         }
 
         try {
-            await navigator.clipboard.writeText(copyArea.value);
+            await navigator.clipboard.writeText(copyArea.textContent);
             
             // Visual feedback
             copyBtn.classList.add('copied');
@@ -281,7 +316,11 @@ class Prompter {
             
         } catch (err) {
             // Fallback for older browsers
-            copyArea.select();
+            const range = document.createRange();
+            range.selectNodeContents(copyArea);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
             document.execCommand('copy');
             this.toast.show();
         }

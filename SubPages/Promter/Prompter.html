@@ -130,12 +130,10 @@
                         </button>
                     </div>
                     <div class="card-body p-0">
-                        <textarea 
-                            id="copyArea" 
-                            class="form-control border-0" 
-                            rows="20" 
-                            readonly 
-                            placeholder="Generated text will appear here..."></textarea>
+                        <div class="output-container" id="outputContainer">
+                            <div class="line-numbers" id="lineNumbers"></div>
+                            <div class="output-text" id="copyArea" contenteditable="false">Generated text will appear here...</div>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -1,6 +1,5 @@
 const BINGO = {
   PieValue: "3.14159",
-  PieValueExtra: "3.141592",
   UploadSyncer: "obsidian",
 
   DriveConfig: {

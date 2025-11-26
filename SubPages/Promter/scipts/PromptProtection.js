@@ -1,8 +1,7 @@
-import BINGO from "../../Assets/Utils/Bingo.js";
-
+const PieValueExtra = "3.141592";
 document.addEventListener('DOMContentLoaded', function () {
   try {
-    const correctPassword = BINGO.PieValueExtra;
+    const correctPassword = PieValueExtra;
     const passwordInput = document.getElementById('passwordInput');
     const submitPasswordBtn = document.getElementById('submitPassword');
     const passwordProtectionDiv = document.getElementById('password-protection');
