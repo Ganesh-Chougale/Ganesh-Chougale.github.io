@@ -1,6 +1,7 @@
 const BINGO = {
   PieValue: "3.14159",
-  UploadSyncer: "obsidian",
+  PieValueExtra: "3.141592",
+  UploadSyncer: "3.141592",
 
   DriveConfig: {
     // Google Drive API Configuration

@@ -1,0 +1,225 @@
+/* Mobile-first responsive design */
+body {
+    background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Password Protection Container */
+.password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+
+/* Card styling consistent with portfolio */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: 600;
+}
+
+/* Copy area styling */
+#copyArea {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    resize: vertical;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+#copyArea:focus {
+    background-color: #fff;
+    box-shadow: none;
+}
+
+/* Generator options styling */
+.generator-option {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    transition: all 0.2s ease-in-out;
+    text-align: left;
+}
+
+.generator-option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+.generator-option.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.generator-option.active .text-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.generator-option.active i {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Form controls */
+.form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Toast styling */
+.toast {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 991.98px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    #copyArea {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .display-5 {
+        font-size: 2rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+    
+    .card-header h5 {
+        font-size: 1rem;
+    }
+    
+    .generator-option h6 {
+        font-size: 0.9rem;
+    }
+    
+    .generator-option small {
+        font-size: 0.75rem;
+    }
+    
+    #copyArea {
+        font-size: 0.8rem;
+        min-height: 300px;
+    }
+    
+    #inputText {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .row.g-4 {
+        gap: 1rem !important;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    .display-5 {
+        font-size: 1.75rem;
+    }
+    
+    .generator-option .d-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .generator-option i {
+        margin-bottom: 0.5rem;
+        margin-right: 0 !important;
+    }
+}
+
+/* Animation for copy button */
+#copyBtn.copied {
+    background-color: #198754;
+    border-color: #198754;
+    color: white;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading #generateBtn::after {
+    content: '';
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+    margin-left: 0.5rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Shake animation for password error */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.4s;
+}

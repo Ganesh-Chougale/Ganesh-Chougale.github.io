@@ -3,11 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Helper Prompter</title>
+    
+    <!-- CDN Links -->
+    <script>
+        fetch('../../Assets/Utils/cdn.html')
+        .then(response => response.text())
+        .then(data => document.head.insertAdjacentHTML('beforeend', data));
+    </script>
+    <!-- CDN Links -->
+    
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="./Prompter.css">
-    <title>Document</title>
 </head>
 <body>
+    <!-- Password Protection -->
+    <div id="password-protection" class="password-container">
+        <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
+            <h4 class="card-title text-center mb-4">Enter Password to Access VC Helper</h4>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Enter extended PI value">
+            </div>
+            <button class="btn btn-primary" id="submitPassword">Access Tool</button>
+            <p id="passwordError" class="text-danger mt-3 d-none">Incorrect password. Please try again.</p>
+        </div>
+    </div>
 
-    <script src="./Prompter.js"></script>
+    <!-- Prompter Content -->
+    <div id="prompter-content" class="container my-5 d-none">
+        <header class="text-center mb-5">
+            <h1 class="display-5">VC Helper</h1>
+        </header>
+
+        <main class="row g-4">
+            <!-- Controls Section -->
+            <section class="col-lg-5">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Generation Options</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Generation Options -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Select Generator Type:</label>
+                            <div class="list-group">
+                                <button class="list-group-item list-group-item-action generator-option" data-type="file-folder">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-folder-tree me-3 text-primary"></i>
+                                        <div>
+                                            <h6 class="mb-1">File & Folder Generator</h6>
+                                            <small class="text-muted">Generate file and folder structure templates</small>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="list-group-item list-group-item-action generator-option" data-type="entire-code">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-code me-3 text-success"></i>
+                                        <div>
+                                            <h6 class="mb-1">Entire Code Generator</h6>
+                                            <small class="text-muted">Generate complete code templates</small>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="list-group-item list-group-item-action generator-option" data-type="snippet">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-scissors me-3 text-warning"></i>
+                                        <div>
+                                            <h6 class="mb-1">Snippet Generator</h6>
+                                            <small class="text-muted">Generate code snippets and patterns</small>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="list-group-item list-group-item-action generator-option" data-type="error-handler">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-bug me-3 text-danger"></i>
+                                        <div>
+                                            <h6 class="mb-1">Error Handler</h6>
+                                            <small class="text-muted">Generate debugging and error handling prompts</small>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Input Text Area -->
+                        <div class="mb-4">
+                            <label for="inputText" class="form-label fw-bold">Custom Input:</label>
+                            <textarea 
+                                id="inputText" 
+                                class="form-control" 
+                                rows="4" 
+                                placeholder="Enter your custom requirements or context here..."></textarea>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button class="btn btn-primary w-100" id="generateBtn">
+                            <i class="fas fa-magic me-2"></i>Generate Prompt
+                        </button>
+
+                        <!-- Additional Options -->
+                        <div class="mt-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="includeComments">
+                                <label class="form-check-label" for="includeComments">
+                                    Include Comments
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="includeExamples">
+                                <label class="form-check-label" for="includeExamples">
+                                    Include Examples
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Copy Area Section -->
+            <section class="col-lg-7">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Generated Output</h5>
+                        <button class="btn btn-sm btn-outline-primary" id="copyBtn" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <textarea 
+                            id="copyArea" 
+                            class="form-control border-0" 
+                            rows="20" 
+                            readonly 
+                            placeholder="Generated text will appear here..."></textarea>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="copyToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong class="me-auto">Copied!</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Text copied to clipboard successfully!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script type="module" src="./scipts/PromptProtection.js"></script>
+    <script src="./scipts/Prompter.js"></script>
 </body>
 </html>

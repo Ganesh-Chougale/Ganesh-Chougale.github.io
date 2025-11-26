@@ -1,0 +1,36 @@
+{
+  "generators": {
+    "file-folder": {
+      "title": "File & Folder Structure Generator",
+      "description": "Generate file and folder structure templates",
+      "template": "{customInput}\nGive me a well-organized file and folder structure.\njust drop it below & i'll create the folder & then files inside those given folder from you.\nRequirements:\n- Follow best practices for scalability\n- Include proper naming conventions\n- Consider separation of concerns\n{conditionalSection}\nPlease provide:\n1. Complete folder hierarchy\n2. File naming conventions\n3. Recommended file organization patterns\n4. Privode structure into micro-level like having seperate file for lengthy code or every function if feasible",
+      "conditionalSection": "Expected Structure:\n{includeComments}\n{includeExamples}",
+      "comments": "// Include comments explaining each folder purpose",
+      "examples": "// Example: src/components/, utils/, assets/, tests/"
+    },
+    "entire-code": {
+      "title": "Complete Code Generator",
+      "description": "Generate complete code templates",
+      "template": "{customInput}\n\nGive me the Complete Code for above File,\n{conditionalSection}\nPlease provide:\n1. Complete working code\n2. Error handling\n3. include all necessary dependencies & imports",
+      "conditionalSection": "{includeComments}\n{includeExamples}",
+      "comments": "// Include comprehensive comments throughout the code",
+      "examples": "// Include usage examples and test cases"
+    },
+    "snippet": {
+      "title": "Code Snippet Generator",
+      "description": "Generate code snippets and patterns",
+      "template": "{customInput}\n\nNow generate a code snippet part.\n{conditionalSection}\nPlease provide:\n1. Clean, reusable code snippet\n2. Brief explanation\n3. include all necessary dependencies & imports",
+      "conditionalSection": "Requirements:\n{includeComments}\n{includeExamples}",
+      "comments": "// Include inline comments explaining the logic",
+      "examples": "// Include usage example"
+    },
+    "error-handler": {
+      "title": "Error Handler & Debugger",
+      "description": "Generate debugging and error handling prompts",
+      "template": "Error:\n{customInput}\n{conditionalSection}",
+      "conditionalSection": "\n{includeComments}\n{includeExamples}",
+      "comments": "// Include detailed explanation of the root cause",
+      "examples": "// Include multiple solution approaches"
+    }
+  }
+}

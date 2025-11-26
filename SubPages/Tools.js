@@ -9,11 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const toolsContentDiv = document.getElementById('tools-content');
   const passwordError = document.getElementById('passwordError');
 
-  // If already logged in
-  if (sessionStorage.getItem('accessGranted') === 'true') {
-    passwordProtectionDiv.classList.add('d-none');
-    toolsContentDiv.classList.remove('d-none');
-  }
+  // Clear any previous session to require password on every visit
+  sessionStorage.removeItem('accessGranted');
 
   function handleIncorrectPassword() {
     passwordInput.value = '';
