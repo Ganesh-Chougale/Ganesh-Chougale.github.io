@@ -130,6 +130,7 @@ class Prompter {
     processTemplate(templateStr, customInput) {
         const includeComments = document.getElementById('includeComments').checked;
         const includeExamples = document.getElementById('includeExamples').checked;
+        const strictRule = document.getElementById('strictRule').checked;
         const generatorData = this.templates[this.selectedGenerator];
 
         let result = templateStr
@@ -176,6 +177,13 @@ class Prompter {
             result = result.replace(/{includeExamples}/g, generatorData.examples);
         } else {
             result = result.replace(/{includeExamples}\n?/g, '');
+        }
+
+        // Handle strict rule
+        if (strictRule && generatorData.strictRule) {
+            result = result.replace(/{strictRule}/g, generatorData.strictRule);
+        } else {
+            result = result.replace(/{strictRule}/g, '');
         }
 
         // Replace any remaining placeholders
