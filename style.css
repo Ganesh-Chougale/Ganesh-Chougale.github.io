@@ -1,220 +1,63 @@
-    header::before{
-        background-image: url("./Assets/Images/ocean_view.jpg");
-        background-size: cover; /* Default for larger screens */
-        background-position: center center;
-        background-repeat: no-repeat;
+header::before{background-image:url("./Assets/Images/ocean_view.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat}
+.hero-header{background-image:url("./Assets/Images/ocean_view.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat;position:relative;overflow:hidden;min-height:300px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hero-header::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);z-index:1}
+.hero-header .container{position:relative;z-index:2}
+.hero-header .text-muted{color:rgba(255,255,255,.9)!important;text-shadow:1px 1px 3px rgba(0,0,0,.7)}
+.hero-header .navbar-nav .nav-link{color:rgba(255,255,255,.9)!important;font-weight:700;text-shadow:1px 1px 2px rgba(0,0,0,.6)}
+.hero-header .navbar-nav .nav-link:hover{color:#e0e0e0!important}
+@keyframes backgroundZoom{0%{background-size:cover}50%{background-size:110%}100%{background-size:cover}}
+@media (max-width:991px){.hero-header{min-height:250px;padding-top:30px;padding-bottom:30px;background-size:115%}}
+@media (max-width:767px){.hero-header{min-height:200px;padding-top:20px;padding-bottom:20px;background-size:125%}.hero-header h1{font-size:2.5rem}.hero-header .text-muted{font-size:.9rem!important}}
+.btn-primary{background-color:#007bff;border-color:#007bff}
+.btn-primary:hover{background-color:#0056b3;border-color:#0056b3}
+html{scroll-behavior:smooth}
+.btn-dark{background-color:#343a40;border-color:#343a40}
+.btn-dark:hover{background-color:#1d2124;border-color:#1d2124}
+.btn-lg i{font-size:1.5rem}
+#projectsAccordion .accordion-item{border:1px solid #dee2e6;margin-bottom:1rem;border-radius:.5rem;overflow:hidden}
+#projectsAccordion .accordion-button{background-color:#f8f9fa;color:#212529;font-size:1.25rem;padding:1.25rem 1.5rem;transition:all .3s ease}
+#projectsAccordion .accordion-button:not(.collapsed){background-color:#007bff;color:#fff;box-shadow:inset 0 -1px 0 rgba(0,0,0,.125)}
+#projectsAccordion .accordion-button:focus{box-shadow:0 0 0 .25rem rgba(0,123,255,.25);border-color:#007bff}
+#projectsAccordion .accordion-button:hover{background-color:#e9ecef}
+#projectsAccordion .accordion-button:not(.collapsed):hover{background-color:#0056b3}
+#projectsAccordion .accordion-body{padding:1.5rem;background-color:#fff}
+#projectsAccordion .accordion-collapse{transition:height .35s ease}
+.project-wrapper{transition:transform .3s ease,box-shadow .3s ease}
+.project-wrapper:hover{transform:translateY(-5px);box-shadow:0 8px 16px rgba(0,0,0,.2)!important}
+#projectModal .modal-body{padding:2rem;background-color:#f8f9fa}
+#projectModal .modal-header{background-color:#007bff;color:#fff;border-bottom:none}
+#projectModal .btn-close{filter:brightness(0) invert(1)}
+#projectModal .card{border:none;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+#projectModal .card-body{padding:2rem}
+#projectModal .card-title{font-size:2rem;margin-bottom:1.5rem}
+#projectModal .card-text{font-size:1.1rem;margin-bottom:1.5rem}
+#projectModal .project-video-container{margin-bottom:2rem}
+#projectModal .btn{margin:.5rem}
+/* .career-widget{position:fixed;top:16px;right:16px;z-index:9999} */
+.career-toggle{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;font-size:20px;background:rgba(0,0,0,.65);color:#fff}
+.career-content{margin-top:10px;max-height:0;opacity:0;transform:translateY(-8px);overflow:hidden;pointer-events:none;transition:max-height .35s ease,opacity .25s ease,transform .25s ease}
+.career-widget.open .career-content{max-height:500px;opacity:1;transform:translateY(0);pointer-events:auto}
+.stepper{display:flex;flex-direction:column;gap:28px}
+.step{display:flex;gap:14px;position:relative;color:#1f2933}
+.step::after{content:"";position:absolute;left:18px;top:36px;width:2px;height:28px;background:rgba(255,255,255,.35)}
+.step:last-child::after{display:none}
+.circle{width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
+.step.done .circle{background:#0d6efd}
+.text strong{font-size:14px}
+.hint{font-size:12px;color:#4b5563;opacity:1}
+.career-toggle img{width:22px;height:22px;pointer-events:none;background:transparent}
+.career-toggle{background:transparent}
+/* Career widget floater adjustments */
+.career-widget {
+    position: fixed; /* Already fixed, stays in place while scrolling */
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+}
+
+/* Hide on small screens (mobile) */
+@media (max-width: 767px) {
+    .career-widget {
+        display: none !important;
     }
-.hero-header {
-    background-image: url("./Assets/Images/ocean_view.jpg");
-    background-size: cover; /* Default for larger screens */
-    background-position: center center;
-    background-repeat: no-repeat;
-    position: relative;
-    overflow: hidden;
-    min-height: 300px; /* Base height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-/* Overlay for text visibility - this already exists, good for contrast */
-.hero-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Keep the existing overlay for general text readability */
-    z-index: 1;
-}
-
-.hero-header .container {
-    position: relative;
-    z-index: 2;
-}
-
-/* Text Enhancements for better visibility */
-
-.hero-header .text-muted {
-    color: rgba(255, 255, 255, 0.9) !important; /* Make the small text whiter for better contrast */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Shadow for tagline */
-}
-
-/* Navbar text visibility */
-.hero-header .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important; /* Ensure nav links are visible */
-    font-weight: bold; /* Make nav links bolder */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* Add a subtle shadow to nav links */
-}
-
-.hero-header .navbar-nav .nav-link:hover {
-    color: #e0e0e0 !important; /* Lighter hover state for nav links */
-}
-
-
-
-
-@keyframes backgroundZoom {
-    0% {
-        background-size: cover;
-    }
-    50% {
-        background-size: 110%;
-    }
-    100% {
-        background-size: cover;
-    }
-}
-
-/* Responsive header height and background zoom */
-@media (max-width: 991px) { /* Applies to screens smaller than 992px (Bootstrap's lg breakpoint) */
-    .hero-header {
-        min-height: 250px; /* Reduced height for tablets and mobiles */
-        padding-top: 30px; /* Adjust padding for better spacing */
-        padding-bottom: 30px;
-        background-size: 115%; /* Zoom out slightly on medium screens */
-    }
-}
-
-@media (max-width: 767px) { /* Further reduce for smaller mobile screens */
-    .hero-header {
-        min-height: 200px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        background-size: 125%; /* Zoom out more on small screens */
-    }
-    .hero-header h1 {
-        font-size: 2.5rem; /* Adjust font size for smaller screens */
-    }
-    .hero-header .text-muted {
-        font-size: 0.9rem !important; /* Adjust font size for smaller screens */
-    }
-}
-
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-.btn-dark {
-    background-color: #343a40;
-    border-color: #343a40;
-}
-
-.btn-dark:hover {
-    background-color: #1d2124;
-    border-color: #1d2124;
-}
-
-.btn-lg i {
-    font-size: 1.5rem;
-}
-
-/* Projects Accordion Styling */
-#projectsAccordion .accordion-item {
-    border: 1px solid #dee2e6;
-    margin-bottom: 1rem;
-    border-radius: 0.5rem;
-    overflow: hidden;
-}
-
-#projectsAccordion .accordion-button {
-    background-color: #f8f9fa;
-    color: #212529;
-    font-size: 1.25rem;
-    padding: 1.25rem 1.5rem;
-    transition: all 0.3s ease;
-}
-
-#projectsAccordion .accordion-button:not(.collapsed) {
-    background-color: #007bff;
-    color: white;
-    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.125);
-}
-
-#projectsAccordion .accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-    border-color: #007bff;
-}
-
-#projectsAccordion .accordion-button:hover {
-    background-color: #e9ecef;
-}
-
-#projectsAccordion .accordion-button:not(.collapsed):hover {
-    background-color: #0056b3;
-}
-
-#projectsAccordion .accordion-body {
-    padding: 1.5rem;
-    background-color: #ffffff;
-}
-
-/* Smooth transition for accordion collapse */
-#projectsAccordion .accordion-collapse {
-    transition: height 0.35s ease;
-}
-
-/* Project Wrapper Styling */
-.project-wrapper {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.project-wrapper:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Fullscreen Modal Styling */
-#projectModal .modal-body {
-    padding: 2rem;
-    background-color: #f8f9fa;
-}
-
-#projectModal .modal-header {
-    background-color: #007bff;
-    color: white;
-    border-bottom: none;
-}
-
-#projectModal .btn-close {
-    filter: brightness(0) invert(1);
-}
-
-#projectModal .card {
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#projectModal .card-body {
-    padding: 2rem;
-}
-
-#projectModal .card-title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-#projectModal .card-text {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-}
-
-#projectModal .project-video-container {
-    margin-bottom: 2rem;
-}
-
-#projectModal .btn {
-    margin: 0.5rem;
 }

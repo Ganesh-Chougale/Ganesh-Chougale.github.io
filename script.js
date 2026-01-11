@@ -86,3 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+const widget = document.getElementById("careerWidget");
+const toggle = document.getElementById("careerToggle");
+
+toggle.addEventListener("click", () => {
+    widget.classList.toggle("open");
+});
