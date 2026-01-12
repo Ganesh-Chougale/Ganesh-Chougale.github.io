@@ -1,34 +1,27 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
 
-    const yearParagraph = document.querySelector('footer .mb-0');
-    if (yearParagraph) {
-        yearParagraph.textContent = `© ${new Date().getFullYear()} Ganesh Chougale. All rights reserved.`;
-    }
+    // Update footer year
+    $('footer .mb-0').text(`© ${new Date().getFullYear()} Ganesh Chougale. All rights reserved.`);
 
+    // Typewriter effect
     const words = ["simple", "concise"];
-    let i = 0;
-    let j = 0;
-    let currentWord = "";
-    let isDeleting = false;
-    const typewriterElement = document.getElementById('typewriter-text');
+    let i = 0, j = 0, currentWord = "", isDeleting = false;
+    const $typewriter = $('#typewriter-text');
 
     function type() {
-        if (!typewriterElement) return;
+        if ($typewriter.length === 0) return;
 
         currentWord = words[i];
 
         if (isDeleting) {
-            typewriterElement.textContent = currentWord.substring(0, j - 1);
+            $typewriter.text(currentWord.substring(0, j - 1));
             j--;
         } else {
-            typewriterElement.textContent = currentWord.substring(0, j + 1);
+            $typewriter.text(currentWord.substring(0, j + 1));
             j++;
         }
 
-        let typeSpeed = 150;
-        if (isDeleting) {
-            typeSpeed = 75;
-        }
+        let typeSpeed = isDeleting ? 75 : 150;
 
         if (!isDeleting && j === currentWord.length) {
             typeSpeed = 1000;
@@ -45,51 +38,49 @@ document.addEventListener('DOMContentLoaded', function() {
     type();
 
     // Project Modal Functionality
-    const projectWrappers = document.querySelectorAll('.project-wrapper');
-    const projectModal = new bootstrap.Modal(document.getElementById('projectModal'));
-    const modalContent = document.getElementById('modalProjectContent');
-    const modalTitle = document.getElementById('projectModalLabel');
+    const $projectWrappers = $('.project-wrapper');
+    const projectModal = new bootstrap.Modal($('#projectModal')[0]);
+    const $modalContent = $('#modalProjectContent');
+    const $modalTitle = $('#projectModalLabel');
 
-    projectWrappers.forEach(wrapper => {
-        wrapper.addEventListener('click', function() {
+    $projectWrappers.each(function() {
+        $(this).on('click', function() {
             // Clone the project content
-            const projectCard = this.cloneNode(true);
-            
-            // Remove the click handler and cursor style from the cloned element
-            projectCard.style.cursor = 'default';
-            projectCard.classList.remove('project-wrapper');
-            
-            // Get the project title
-            const projectTitle = projectCard.querySelector('.card-title').textContent;
-            
+            const $projectCard = $(this).clone();
+
+            // Remove click handler and cursor
+            $projectCard.css('cursor', 'default').removeClass('project-wrapper');
+
             // Update modal title
-            modalTitle.textContent = projectTitle;
-            
-            // Clear previous content and add new content
-            modalContent.innerHTML = '';
-            
-            // Create a container for the fullscreen project
-            const fullscreenContainer = document.createElement('div');
-            fullscreenContainer.className = 'container-fluid h-100';
-            fullscreenContainer.innerHTML = `
-                <div class="row h-100 align-items-center justify-content-center">
-                    <div class="col-12 col-lg-10">
-                        ${projectCard.innerHTML}
+            const projectTitle = $projectCard.find('.card-title').text();
+            $modalTitle.text(projectTitle);
+
+            // Clear previous content
+            $modalContent.empty();
+
+            // Add fullscreen container
+            const $fullscreenContainer = $(`
+                <div class="container-fluid h-100">
+                    <div class="row h-100 align-items-center justify-content-center">
+                        <div class="col-12 col-lg-10">
+                            ${$projectCard.html()}
+                        </div>
                     </div>
                 </div>
-            `;
-            
-            modalContent.appendChild(fullscreenContainer);
-            
-            // Show the modal
+            `);
+
+            $modalContent.append($fullscreenContainer);
+
+            // Show modal
             projectModal.show();
         });
     });
-});
 
-const widget = document.getElementById("careerWidget");
-const toggle = document.getElementById("careerToggle");
+    // Career widget toggle
+    const $widget = $("#careerWidget");
+    const $toggle = $("#careerToggle");
 
-toggle.addEventListener("click", () => {
-    widget.classList.toggle("open");
+    $toggle.on("click", function() {
+        $widget.toggleClass("open");
+    });
 });
