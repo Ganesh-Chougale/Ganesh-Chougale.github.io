@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monthly Personal Finance System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="./Budget.css">
+
+<script src="./Budget.js" defer></script>
+</head>
+
+<body>
+
+<!-- Password Protection -->
+<div id="password-protection" class="password-container">
+  <div class="card p-4 password-card">
+    <h4 class="text-center mb-3">Enter Password to Access Budget</h4>
+
+    <input
+      type="password"
+      id="passwordInput"
+      class="form-control mb-3"
+      placeholder="Enter secret"
+    >
+
+    <button class="btn btn-success w-100" id="submitPassword">
+      Access Budget
+    </button>
+
+    <p id="passwordError" class="text-danger mt-3 d-none">
+      Incorrect password
+    </p>
+  </div>
+</div>
+
+<!-- Budget Content -->
+<div id="budget-content" class="d-none">
+  <div class="container py-3" style="max-width: 520px;">
+
+    <h4 class="text-center mb-3">My Money System</h4>
+
+    <!-- Income -->
+    <div class="card p-3 mb-3">
+      <label class="form-label fw-semibold">Monthly Income</label>
+      <input type="number" id="income" class="form-control" placeholder="Enter income" oninput="calculate()">
+    </div>
+
+    <!-- Buckets -->
+    <div class="card p-3 mb-3 bucket">
+      <div class="section-title">Monthly Buckets</div>
+      <div class="line"><span class="label">Needs</span><span class="percent">45%</span><span class="value needs" id="needs"></span></div>
+      <div class="line"><span class="label">Investment</span><span class="percent">30%</span><span class="value invest" id="invest"></span></div>
+      <div class="line"><span class="label">Wants</span><span class="percent">10%</span><span class="value wants" id="wants"></span></div>
+      <div class="line"><span class="label">Festival Fund</span><span class="percent">10%</span><span class="value fest" id="festival"></span></div>
+      <div class="line"><span class="label">Emergency Fund</span><span class="percent">5%</span><span class="value emer" id="emergency"></span></div>
+    </div>
+
+    <!-- Festival Controls -->
+    <div class="card p-3 mb-3 festival">
+      <div class="section-title">Festival Controls</div>
+      <div class="line"><span class="label">Strict Buffer</span><span class="percent">5%</span><span class="value buffer" id="buffer"></span></div>
+      <div class="line"><span class="label">Reserve Fuel</span><span class="percent">5–10%</span><span class="value buffer" id="reserve"></span></div>
+      <div class="line"><span class="label">Other Festivals</span><span class="percent">60%</span><span class="value fest" id="general"></span></div>
+      <div class="line"><span class="label">Diwali Pot</span><span class="percent">40%</span><span class="value fest" id="diwali"></span></div>
+    </div>
+
+    <!-- Emergency -->
+    <div class="card p-3 mb-3 emergency">
+      <div class="section-title">Emergency Safety</div>
+      <div class="line"><span class="label">Monthly Needs</span><span class="percent">—</span><span class="value needs" id="cy"></span></div>
+      <div class="line"><span class="label">Red Zone (1×)</span><span class="percent">1×</span><span class="value buffer" id="red"></span></div>
+      <div class="line"><span class="label">Yellow Zone (3×)</span><span class="percent">3×</span><span class="value wants" id="yellow"></span></div>
+      <div class="line"><span class="label">Green Zone (6×)</span><span class="percent">6×</span><span class="value safe" id="green"></span></div>
+    </div>
+
+    <!-- Rules -->
+    <div class="card p-3 mb-3 rule festival-rule">
+      <details>
+        <summary>🎉 Festival Fund Rules</summary>
+        <ul>
+          <li><strong>Strict Buffer (5%)</strong> – Never touch unless last resort</li>
+          <li><strong>Reserve Fuel (5–10%)</strong> – Essentials only</li>
+          <li><strong>Pots</strong> – 60% Other, 40% Diwali only</li>
+          <li><strong>Year End</strong> – Buffer stays, rest → Emergency</li>
+          <li><strong>Bonus</strong> – 50% Festival / 50% Emergency</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="card p-3 mb-3 rule emergency-rule">
+      <details>
+        <summary>🛟 Emergency Fund Rules</summary>
+        <div class="rule-columns">
+          <div>
+            <strong>Allowed ✅</strong>
+            <ul>
+              <li>Medical</li>
+              <li>Job loss</li>
+              <li>Family crisis</li>
+              <li>Essential travel</li>
+              <li>Income stop</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Never ❌</strong>
+            <ul>
+              <li>Phone</li>
+              <li>Clothes</li>
+              <li>Festivals</li>
+              <li>Friends</li>
+              <li>Gadgets</li>
+            </ul>
+          </div>
+        </div>
+        <p class="mt-2">
+          Ideal Emergency Fund = Monthly Needs × 6  
+          <br>Green zone → redirect future emergency savings to zero-risk investments.
+        </p>
+      </details>
+    </div>
+
+  </div>
+</div>
+
+<script type="module" src="./Bingo_Auth.js"></script>
+</body>
+</html>
