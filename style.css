@@ -34,30 +34,207 @@ html{scroll-behavior:smooth}
 #projectModal .project-video-container{margin-bottom:2rem}
 #projectModal .btn{margin:.5rem}
 /* .career-widget{position:fixed;top:16px;right:16px;z-index:9999} */
-.career-toggle{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;font-size:20px;background:rgba(0,0,0,.65);color:#fff}
-.career-content{margin-top:10px;max-height:0;opacity:0;transform:translateY(-8px);overflow:hidden;pointer-events:none;transition:max-height .35s ease,opacity .25s ease,transform .25s ease}
+.career-toggle{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;font-size:20px;background:rgba(0,0,0,.65);color:#fff;display:flex;align-items:center;justify-content:center}
+.career-content{
+    margin-top: 10px;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 10px;
+    border-radius: 8px;
+}
 .career-widget.open .career-content{max-height:500px;opacity:1;transform:translateY(0);pointer-events:auto}
 .stepper{display:flex;flex-direction:column;gap:28px}
-.step{display:flex;gap:14px;position:relative;color:#1f2933}
+.step{display:flex;gap:14px;position:relative;color:#ffffff}
 .step::after{content:"";position:absolute;left:18px;top:36px;width:2px;height:28px;background:rgba(255,255,255,.35)}
 .step:last-child::after{display:none}
 .circle{width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
 .step.done .circle{background:#0d6efd}
 .text strong{font-size:14px}
-.hint{font-size:12px;color:#4b5563;opacity:1}
-.career-toggle img{width:22px;height:22px;pointer-events:none;background:transparent}
+.hint{font-size:12px;color:#ffffff;opacity:0.8}
+.career-toggle img{width:22px;height:22px;pointer-events:none;background:transparent;animation:rotate 3s linear infinite}
 .career-toggle{background:transparent}
-/* Career widget floater adjustments */
-.career-widget {
-    position: fixed; /* Already fixed, stays in place while scrolling */
-    top: 16px;
-    right: 16px;
-    z-index: 9999;
+
+/* Atom orbit animation */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* Hide on small screens (mobile) */
+.career-toggle {
+    position: relative;
+}
+
+.career-toggle::before,
+.career-toggle::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #007bff;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.career-toggle::before {
+    animation: orbit 2s linear infinite;
+}
+
+.career-toggle::after {
+    animation: orbit 1.5s linear infinite reverse;
+}
+
+@keyframes orbit {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(15px) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg) translateX(15px) rotate(-360deg);
+    }
+}
+
+/* Hold & Glow Button Style for Tools Link */
+:root {
+    --base-grey: #666666;
+    --dark-grey: #444444;
+    --light-grey: #888888;
+    --text-off-white: #eeeeee;
+    --glow-white: #ffbb00;
+    --btn-grad: linear-gradient(160deg, var(--base-grey), var(--dark-grey));
+    --border-active: 3px outset #ffea00;
+}
+
+.tools-link {
+    border-radius: 12px !important;
+    border: 3px outset var(--light-grey) !important;
+    position: relative !important;
+    display: inline-block !important;
+    padding: 10px 20px !important;
+    color: var(--text-off-white) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    overflow: hidden !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1) !important;
+    font-family: verdana, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: bolder !important;
+    text-decoration: none !important;
+    background: var(--btn-grad) !important;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5) !important;
+    transition: 0.2s !important;
+    float: right !important;
+}
+
+.tools-link:active {
+    border: var(--border-active) !important;
+    color: var(--glow-white) !important;
+    background: var(--btn-grad) !important;
+    text-shadow: 0px 0px 4px #cccccc !important;
+    box-shadow: 0 0 10px var(--glow-white), 0 0 40px var(--glow-white), 0 0 80px var(--glow-white) !important;
+    transition-delay: 1s !important;
+}
+
+.tools-link span {
+    position: absolute;
+    display: block;
+}
+
+.tools-link span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--text-off-white));
+}
+
+.tools-link:active span:nth-child(1) {
+    left: 100%;
+    transition: 1s;
+}
+
+.tools-link span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--text-off-white));
+}
+
+.tools-link:active span:nth-child(2) {
+    top: 100%;
+    transition: 1s;
+    transition-delay: 0.25s;
+}
+
+.tools-link span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, var(--text-off-white));
+}
+
+.tools-link:active span:nth-child(3) {
+    right: 100%;
+    transition: 1s;
+    transition-delay: 0.5s;
+}
+
+.tools-link span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, var(--text-off-white));
+}
+
+.tools-link:active span:nth-child(4) {
+    bottom: 100%;
+    transition: 1s;
+    transition-delay: 0.75s;
+}
+
+.tools-link h2 {
+    margin: 0 !important;
+    font-size: 16px !important;
+}
+/* Career widget floater adjustments */
+.career-widget {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    left: unset;
+    z-index: 9999;
+    background: transparent;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Mobile specific adjustment */
 @media (max-width: 767px) {
     .career-widget {
-        display: none !important;
+        position: absolute;
+        top: 16px;
+        right: 160px;
+        left: unset !important;
+        transform: none !important;
     }
+}
+
+/* Ensure the parent container has relative positioning */
+header.hero-header {
+    position: relative;
+}
+
+.career-widget.open .career-content{
+    max-height: 500px !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
 }

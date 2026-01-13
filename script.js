@@ -80,7 +80,8 @@ $(document).ready(function() {
     const $widget = $("#careerWidget");
     const $toggle = $("#careerToggle");
 
-    $toggle.on("click", function() {
+    $toggle.on("click", function(e) {
+        e.preventDefault();
         $widget.toggleClass("open");
     });
 });

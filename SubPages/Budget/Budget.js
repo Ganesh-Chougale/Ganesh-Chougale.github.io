@@ -6,6 +6,36 @@ function money(n) {
   });
 }
 
+// Font selection function
+function selectFont(fontChoice) {
+  // Define font mappings
+  const fontMap = {
+    'cursive': 'cursive',
+    'comic': "'Comic Sans MS', cursive",
+    'lucida': "'Lucida Handwriting', cursive"
+  };
+  
+  // Update CSS for the selected font
+  const style = document.createElement('style');
+  style.textContent = `
+    h4, .label, .rule summary, .btn, .section-title {
+      font-family: ${fontMap[fontChoice]} !important;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Store the choice in localStorage
+  localStorage.setItem('selectedHandwritingFont', fontChoice);
+}
+
+// Load saved font choice on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const savedFont = localStorage.getItem('selectedHandwritingFont');
+  if (savedFont) {
+    selectFont(savedFont);
+  }
+});
+
 function calculate() {
   const income = Number(document.getElementById("income").value || 0);
 
