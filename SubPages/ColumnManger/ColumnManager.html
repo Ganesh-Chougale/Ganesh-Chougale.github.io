@@ -22,13 +22,11 @@
   transition: width 0.3s;
 }
 
-/* --- STABLE BASE FOR 100% REFERENCE --- */
 .revealer-base {
   position: relative;
   width: 100%;
 }
 
-/* Scrollable table container */
 .table-wrapper {
   position: relative;
   width: 100%;
@@ -38,7 +36,6 @@
 
 table {
   width: 100%;
-  transition: all 0.3s;
   table-layout: fixed;
 }
 
@@ -56,7 +53,6 @@ th, td {
   color: #0d6efd;
 }
 
-/* THIS IS YOUR FIXED REVEALER */
 .revealer-area {
   position: absolute;
   top: 0;
@@ -73,19 +69,16 @@ th, td {
   justify-content: center;
   font-weight: bold;
   color: #842029;
-  transition: all 0.3s;
   pointer-events: none;
   z-index: 10;
 }
 
-/* Invisible spacer column */
 .spacer-col {
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
 }
 
-/* ===== NEW: DRAG HANDLE ===== */
 .resizer {
   position: absolute;
   right: 0;
@@ -129,22 +122,20 @@ th, td {
 </div>
 
 <div class="revealer-base mb-3">
-
   <div class="table-wrapper">
-  <table id="mainTable" class="table table-bordered table-sm mb-0">
-    <thead>
-      <tr id="headerRow"></tr>
-    </thead>
-    <tbody>
-      <tr id="dataRow"></tr>
-    </tbody>
-  </table>
+    <table id="mainTable" class="table table-bordered table-sm mb-0">
+      <thead>
+        <tr id="headerRow"></tr>
+      </thead>
+      <tbody>
+        <tr id="dataRow"></tr>
+      </tbody>
+    </table>
   </div>
 
-  <div id="revealerID" class="revealer-area">
+  <div id="revealerID" class="revealer-area" style="height: 67px;">
     100% unused
   </div>
-
 </div>
 
 <h6>Columns</h6>
@@ -163,68 +154,75 @@ let startWidth = 0;
 let nextStartWidth = 0;
 
 function recalc() {
-  const used = columns.reduce((sum, c) => sum + c.width, 0);
+  const used = columns.reduce((s, c) => s + c.width, 0);
   const remaining = 100 - used;
 
-  document.getElementById("remainingText").innerText = remaining + "%";
-  document.getElementById("meter").style.width = remaining + "%";
+  remainingText.innerText = remaining + "%";
+  meter.style.width = remaining + "%";
 
-  const revealer = document.getElementById("revealerID");
-  revealer.style.width = remaining + "%";
-  revealer.style.left = used + "%";
-  revealer.innerText = remaining > 0 ? remaining + "% unused" : "Fully allocated";
+  revealerID.style.width = remaining + "%";
+  revealerID.style.left = used + "%";
+  revealerID.innerText = remaining > 0 ? remaining + "% unused" : "Fully allocated";
 }
 
 function render() {
-  const header = document.getElementById("headerRow");
-  const body = document.getElementById("dataRow");
-  const list = document.getElementById("colList");
-
-  header.innerHTML = "";
-  body.innerHTML = "";
-  list.innerHTML = "";
+  headerRow.innerHTML = "";
+  dataRow.innerHTML = "";
+  colList.innerHTML = "";
 
   columns.forEach((col, i) => {
+
     const th = document.createElement("th");
     th.style.width = col.width + "%";
     th.title = col.name;
-
     th.innerHTML = `
       ${col.name}
       <i class="bi bi-pencil edit" onclick="rename(${i})"></i>
       <div class="resizer" onmousedown="startResize(event, ${i})"></div>
     `;
-    header.appendChild(th);
+    headerRow.appendChild(th);
 
     const td = document.createElement("td");
     td.innerHTML = `
       ${col.width}%
       <i class="bi bi-pencil edit" onclick="editWidth(${i})"></i>
     `;
-    body.appendChild(td);
+    dataRow.appendChild(td);
 
     const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between";
+    li.className = "list-group-item";
     li.innerHTML = `
-      ${col.name}
-      <span class="badge bg-primary">${col.width}%</span>
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted fw-semibold" style="width:30px;">
+          ${i + 1}.
+        </span>
+
+        <span class="flex-grow-1 text-truncate">
+          ${col.name}
+        </span>
+
+        <span class="flex-grow-1 border-bottom mx-2" style="height:1px;"></span>
+
+        <span class="badge bg-primary">
+          ${col.width}%
+        </span>
+      </div>
     `;
-    list.appendChild(li);
+    colList.appendChild(li);
   });
 
-  const used = columns.reduce((sum, c) => sum + c.width, 0);
-  
+  const used = columns.reduce((s, c) => s + c.width, 0);
   if (used < 100) {
     const remaining = 100 - used;
-    
-    const thSpacer = document.createElement("th");
-    thSpacer.style.width = remaining + "%";
-    thSpacer.className = "spacer-col"; 
-    header.appendChild(thSpacer);
 
-    const tdSpacer = document.createElement("td");
-    tdSpacer.className = "spacer-col";
-    body.appendChild(tdSpacer);
+    const th = document.createElement("th");
+    th.style.width = remaining + "%";
+    th.className = "spacer-col";
+    headerRow.appendChild(th);
+
+    const td = document.createElement("td");
+    td.className = "spacer-col";
+    dataRow.appendChild(td);
   }
 
   recalc();
@@ -235,10 +233,7 @@ function addColumn() {
   let width = parseInt(colWidth.value) || 5;
 
   const used = columns.reduce((s, c) => s + c.width, 0);
-  if (used + width > 100) {
-    alert("Not enough remaining space");
-    return;
-  }
+  if (used + width > 100) return alert("Not enough remaining space");
 
   if (!name) {
     colCount++;
@@ -260,23 +255,17 @@ function rename(i) {
 }
 
 function editWidth(i) {
-  const current = columns[i].width;
-  const n = parseInt(prompt("New width %", current));
-  if (isNaN(n) || n < 0) return;
+  const n = parseInt(prompt("New width %", columns[i].width));
+  if (isNaN(n) || n < 1) return;
 
-  const otherUsed = columns.reduce((s, c, idx) =>
-    idx === i ? s : s + c.width, 0);
-
-  if (otherUsed + n > 100) {
-    alert("Not enough remaining space");
-    return;
-  }
+  const other = columns.reduce((s, c, idx) => idx === i ? s : s + c.width, 0);
+  if (other + n > 100) return alert("Not enough remaining space");
 
   columns[i].width = n;
   render();
 }
 
-/* ===== DRAG LOGIC ===== */
+/* DRAG RESIZE */
 
 function startResize(e, i) {
   isDragging = true;
@@ -295,20 +284,17 @@ function startResize(e, i) {
 function onDrag(e) {
   if (!isDragging) return;
 
-  const table = document.getElementById("mainTable");
-  const rect = table.getBoundingClientRect();
-  const deltaPx = e.clientX - startX;
-  const deltaPercent = (deltaPx / rect.width) * 100;
+  const rect = mainTable.getBoundingClientRect();
+  const delta = ((e.clientX - startX) / rect.width) * 100;
 
-  let newWidth = Math.max(1, Math.round(startWidth + deltaPercent));
-  let newNextWidth = Math.max(1, Math.round(nextStartWidth - deltaPercent));
+  let newWidth = Math.max(1, Math.round(startWidth + delta));
+  let newNext = Math.max(1, Math.round(nextStartWidth - delta));
 
-  if (newWidth + newNextWidth > startWidth + nextStartWidth) return;
+  if (newWidth + newNext > startWidth + nextStartWidth) return;
 
   columns[dragIndex].width = newWidth;
-
   if (dragIndex + 1 < columns.length) {
-    columns[dragIndex + 1].width = newNextWidth;
+    columns[dragIndex + 1].width = newNext;
   }
 
   render();
@@ -316,7 +302,6 @@ function onDrag(e) {
 
 function stopDrag() {
   isDragging = false;
-  dragIndex = null;
   document.removeEventListener("mousemove", onDrag);
   document.removeEventListener("mouseup", stopDrag);
 }
