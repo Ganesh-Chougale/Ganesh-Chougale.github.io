@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Table Column Manager</title>
+<title>Development Tools Suite</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
 .meter-container {
@@ -92,67 +92,143 @@ th, td {
 .resizer:hover {
   background: rgba(13, 110, 253, 0.6);
 }
+
+textarea {
+  min-height: 120px;
+  resize: none;
+  overflow: hidden;
+  font-family: monospace;
+}
+
+.tool-section {
+  display: none;
+}
+
+.tool-section.active {
+  display: block;
+}
 </style>
 </head>
 
 <body class="bg-light">
 <div class="container py-4">
 
-<h4 class="mb-3">Table & Column Manager</h4>
-
-<div class="d-flex justify-content-between mb-1">
-  <strong>Remaining Space</strong>
-  <span id="remainingText">100%</span>
-</div>
-
-<div class="meter-container mb-3">
-  <div id="meter" class="meter" style="width:100%"></div>
-</div>
-
-<div class="row g-2 mb-3">
-  <div class="col-md-5 col-6">
-    <input id="colName" class="form-control" placeholder="Column name">
-  </div>
-  <div class="col-md-3 col-6">
-    <input id="colWidth" class="form-control" type="number" placeholder="Width % (default 5)">
-  </div>
-  <div class="col-md-4 col-12">
-    <button class="btn btn-primary w-100" onclick="addColumn()">+ Add Column</button>
+<!-- Header with Tool Selector -->
+<div class="row mb-4">
+  <div class="col-12">
+    <h4 class="mb-3">Development Tools Suite</h4>
+    <div class="row g-2">
+      <div class="col-12">
+        <select id="toolSelector" class="form-select" onchange="switchTool()">
+          <option value="tableManager">Table Column Manager</option>
+          <option value="draftGenerator">Automator Draft Generator</option>
+        </select>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="revealer-base mb-3">
-  <div class="table-wrapper">
-    <table id="mainTable" class="table table-bordered table-sm mb-0">
-      <thead>
-        <tr id="headerRow"></tr>
-      </thead>
-      <tbody>
-        <tr id="dataRow"></tr>
-      </tbody>
-    </table>
+<!-- Table Column Manager Section -->
+<div id="tableManager" class="tool-section active">
+  <div class="d-flex justify-content-between mb-1">
+    <strong>Remaining Space</strong>
+    <span id="remainingText">100%</span>
   </div>
 
-  <div id="revealerID" class="revealer-area" style="height: 67px;">
-    100% unused
+  <div class="meter-container mb-3">
+    <div id="meter" class="meter" style="width:100%"></div>
   </div>
+
+  <div class="row g-2 mb-3">
+    <div class="col-md-5 col-6">
+      <input id="colName" class="form-control" placeholder="Column name">
+    </div>
+    <div class="col-md-3 col-6">
+      <input id="colWidth" class="form-control" type="number" placeholder="Width % (default 5)">
+    </div>
+    <div class="col-md-4 col-12">
+      <button class="btn btn-primary w-100" onclick="addColumn()">+ Add Column</button>
+    </div>
+  </div>
+
+  <div class="revealer-base mb-3">
+    <div class="table-wrapper">
+      <table id="mainTable" class="table table-bordered table-sm mb-0">
+        <thead>
+          <tr id="headerRow"></tr>
+        </thead>
+        <tbody>
+          <tr id="dataRow"></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="revealerID" class="revealer-area" style="height: 67px;">
+      100% unused
+    </div>
+  </div>
+
+  <h6>Columns</h6>
+  <ul id="colList" class="list-group"></ul>
 </div>
 
-<h6>Columns</h6>
-<ul id="colList" class="list-group"></ul>
+<!-- Draft Generator Section -->
+<div id="draftGenerator" class="tool-section">
+  <!-- Buttons (Mobile First: stacked) -->
+  <div class="d-grid gap-2 mb-3">
+    <button class="btn btn-primary" onclick="generateWorkDraft()">
+      Work Draft Generator
+    </button>
+
+    <button class="btn btn-success" onclick="generateTodayDate()">
+      Today Date Picker
+    </button>
+  </div>
+
+  <!-- Output Area -->
+  <div class="mb-2 position-relative">
+    
+    <!-- Copy Icon -->
+    <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 shadow-sm"
+            onclick="copyText()"
+            title="Copy">
+      <i class="bi bi-clipboard"></i>
+    </button>
+
+    <textarea id="outputText"
+              class="form-control"
+              placeholder="Generated draft will appear here..."
+              oninput="autoResize(this)"></textarea>
+  </div>
+</div>
 
 </div>
 
 <script>
+// Global variables for table manager
 let columns = [];
 let colCount = 0;
-
 let isDragging = false;
 let dragIndex = null;
 let startX = 0;
 let startWidth = 0;
 let nextStartWidth = 0;
 
+// Tool switching
+function switchTool() {
+  const selector = document.getElementById('toolSelector');
+  const selectedTool = selector.value;
+  
+  // Hide all tool sections
+  document.querySelectorAll('.tool-section').forEach(section => {
+    section.classList.remove('active');
+  });
+  
+  // Show selected tool section
+  document.getElementById(selectedTool).classList.add('active');
+}
+
+// ---------- Table Manager Functions ----------
 function recalc() {
   const used = columns.reduce((s, c) => s + c.width, 0);
   const remaining = 100 - used;
@@ -266,7 +342,6 @@ function editWidth(i) {
 }
 
 /* DRAG RESIZE */
-
 function startResize(e, i) {
   isDragging = true;
   dragIndex = i;
@@ -306,6 +381,61 @@ function stopDrag() {
   document.removeEventListener("mouseup", stopDrag);
 }
 
+// ---------- Draft Generator Functions ----------
+function generateWorkDraft() {
+  const template =
+`\`\`\`yml
+Work        :
+Flow        :
+Dal         :
+BO          :
+Controller  :
+View        :
+Ticket      :
+\`\`\`
+- Description  
+\`\`\`txt
+
+\`\`\``;
+
+  const ta = document.getElementById('outputText');
+  ta.value = template;
+  autoResize(ta);
+}
+
+function generateTodayDate() {
+  const today = new Date();
+
+  const daysEng = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const daysHin = ["रविवार","सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"];
+
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const yyyy = today.getFullYear();
+
+  const dayName = daysEng[today.getDay()];
+  const dayHin = daysHin[today.getDay()];
+
+  const template =
+`#### Date: \`${dd}-${mm}-${yyyy} (${dayName} | ${dayHin})\``;
+
+  const ta = document.getElementById('outputText');
+  ta.value = template;
+  autoResize(ta);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = (el.scrollHeight) + 'px';
+}
+
+function copyText() {
+  const textArea = document.getElementById('outputText');
+  textArea.select();
+  document.execCommand('copy');
+}
+
+// Initialize
 recalc();
 </script>
 </body>
