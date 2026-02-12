@@ -180,9 +180,16 @@ textarea {
       Work Draft Generator
     </button>
 
-    <button class="btn btn-success" onclick="generateTodayDate()">
-      Today Date Picker
-    </button>
+    <div class="row g-2">
+      <div class="col-6">
+        <input type="date" id="customDate" class="form-control" onchange="generateCustomDate()">
+      </div>
+      <div class="col-6">
+        <button class="btn btn-success w-100" onclick="generateTodayDate()">
+          Today's Date
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Output Area -->
@@ -415,6 +422,34 @@ function generateTodayDate() {
 
   const dayName = daysEng[today.getDay()];
   const dayHin = daysHin[today.getDay()];
+
+  const template =
+`#### Date: \`${dd}-${mm}-${yyyy} (${dayName} | ${dayHin})\``;
+
+  const ta = document.getElementById('outputText');
+  ta.value = template;
+  autoResize(ta);
+}
+
+function generateCustomDate() {
+  const customDateInput = document.getElementById('customDate');
+  const selectedDate = customDateInput.value;
+  
+  if (!selectedDate) {
+    return; // Don't show alert, just return silently
+  }
+
+  const date = new Date(selectedDate);
+
+  const daysEng = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const daysHin = ["रविवार","सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"];
+
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yyyy = date.getFullYear();
+
+  const dayName = daysEng[date.getDay()];
+  const dayHin = daysHin[date.getDay()];
 
   const template =
 `#### Date: \`${dd}-${mm}-${yyyy} (${dayName} | ${dayHin})\``;
