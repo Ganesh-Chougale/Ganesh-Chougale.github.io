@@ -54,7 +54,9 @@ th, td {
 }
 
 .revealer-area {
-  position: absolute;
+  position: relative;
+  right: 120px;
+  /* position: absolute; */
   top: 0;
   height: 100%;
   background: repeating-linear-gradient(
@@ -91,6 +93,10 @@ th, td {
 
 .resizer:hover {
   background: rgba(13, 110, 253, 0.6);
+}
+.revealerID{
+  position: relative;
+  right: 120px;
 }
 
 textarea {
@@ -168,8 +174,12 @@ textarea {
     </div>
   </div>
 
-  <h6>Columns</h6>
-  <ul id="colList" class="list-group"></ul>
+  <div class="row">
+    <div class="col-4 offset-3">
+      <h6>Columns</h6>
+      <ul id="colList" class="list-group"></ul>
+    </div>
+  </div>
 </div>
 
 <!-- Draft Generator Section -->
