@@ -20,6 +20,25 @@
   height: 100%;
   background: #198754;
   transition: width 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.meter.full {
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de;
+  }
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 60px #ff00de;
+  }
 }
 
 .revealer-base {
@@ -136,11 +155,6 @@ textarea {
 
 <!-- Table Column Manager Section -->
 <div id="tableManager" class="tool-section active">
-  <div class="d-flex justify-content-between mb-1">
-    <strong>Remaining Space</strong>
-    <span id="remainingText">100%</span>
-  </div>
-
   <div class="meter-container mb-3">
     <div id="meter" class="meter" style="width:100%"></div>
   </div>
@@ -250,12 +264,22 @@ function recalc() {
   const used = columns.reduce((s, c) => s + c.width, 0);
   const remaining = 100 - used;
 
-  remainingText.innerText = remaining + "%";
-  meter.style.width = remaining + "%";
+  // Update meter width and color
+  if (remaining === 0) {
+    meter.style.width = "100%";
+    meter.style.background = '#dc3545';
+    meter.classList.add('full');
+    meter.innerText = "Space fully allocated";
+  } else {
+    meter.style.width = remaining + "%";
+    meter.style.background = '#198754';
+    meter.classList.remove('full');
+    meter.innerText = "";
+  }
 
   revealerID.style.width = remaining + "%";
   revealerID.style.left = used + "%";
-  revealerID.innerText = remaining > 0 ? remaining + "% unused" : "Fully allocated";
+  revealerID.innerText = remaining > 0 ? remaining + "% unused" : "";
 }
 
 function render() {
