@@ -2,30 +2,28 @@
 Ganesh-Chougale.github.io
 ├── Assets/
 │   ├── Images/
+│   │   ├── atom.svg
 │   │   ├── ocean_view.jpg
 │   │   └── own.jpg
 │   └── Utils/
 │       ├── Bingo.js
 │       └── cdn.html
-├── Codex/
-│   ├── Features/
-│   │   └── Scripts/
-│   ├── Input/
-│   │   ├── Fixed.md
-│   │   ├── Instructions.txt
-│   │   └── TriedSolutions.txt
-│   ├── Output/
-│   │   └── output.md
-│   └── Runner.js
 ├── favicon.ico
 ├── index.html
 ├── script.js
 ├── style.css
 └── SubPages/
+    ├── Budget/
+    │   ├── Bingo_Auth.js
+    │   ├── Budget.css
+    │   ├── Budget.html
+    │   └── Budget.js
     ├── DataConverter/
     │   ├── DataConverter.css
     │   ├── DataConverter.html
     │   └── DataConverter.js
+    ├── DevManger/
+    │   └── DevManager.html
     ├── ImageResizer/
     │   ├── ImageResizer.css
     │   ├── ImageResizer.html
@@ -34,12 +32,8 @@ Ganesh-Chougale.github.io
     │   ├── MediaFinder.css
     │   ├── MediaFinder.html
     │   └── MediaFinder.js
-    ├── NBT/
-    │   ├── NBT.css
-    │   ├── NBT.html
-    │   ├── NBT.js
-    │   └── SubJS/
     ├── Promter/
+    │   ├── Draft Generator.html
     │   ├── Prompter.css
     │   ├── Prompter.html
     │   └── scipts/

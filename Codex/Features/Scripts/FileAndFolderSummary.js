@@ -5,7 +5,7 @@ const depthLevel = 3; // 👈 change to 'Infinity' if you want full depth
 
 const ignoredFolders = [
     '.angular', '.vscode', 'node_modules', 'Migrations', 'Debug',
-    'Dependencies', 'Connected Services', '.git'
+    'Dependencies', 'Connected Services', '.git', 'Codex'
 ];
 
 function walkDir(dir, callback, depth = 0, maxDepth = depthLevel) {
